@@ -1,0 +1,16 @@
+# Frontend
+tfg_ank9_frontend/node_modules/
+tfg_ank9_frontend/dist/
+tfg_ank9_frontend/.env.local
+
+# Backend
+tfg_ank9_backend/vendor/
+tfg_ank9_backend/var/
+tfg_ank9_backend/.env.local
+tfg_ank9_backend/.env.test
+tfg_ank9_backend/public/bundles/
+
+# General
+.DS_Store
+.idea/
+.vscode/
