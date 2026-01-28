@@ -4,7 +4,7 @@ import Header from '../components/Header'
 export default function Services() {
   return (
     <>
-        <Header></Header>
+        <Header>Servicios</Header>
         <div>Services</div>
     </>
   )

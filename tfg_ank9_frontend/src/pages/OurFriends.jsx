@@ -4,7 +4,7 @@ import Header from '../components/Header'
 export default function OurFriends() {
   return (
     <>
-        <Header></Header>
+        <Header>Nuestros amigos</Header>
         <div>OurFriends</div>
     </>
   )

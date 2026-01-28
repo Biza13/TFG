@@ -4,7 +4,7 @@ import Header from '../components/Header'
 export default function Register() {
   return (
     <>
-        <Header></Header>
+        <Header>Registro</Header>
         <div>Register</div>
     </>
   )

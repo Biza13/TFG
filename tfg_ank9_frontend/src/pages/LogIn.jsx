@@ -24,7 +24,7 @@ export default function LogIn() {
 
   return (
     <>
-      <Header></Header>
+      <Header>Log in</Header>
       <div className='w-full bg-red-500'>
         <h1>Prueba de Login TFG</h1>
         <form onSubmit={handleLogin}>
