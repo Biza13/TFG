@@ -25,7 +25,7 @@ export default function useDeviceType() {
         //el return en unseEffect es para cerrar algo
         //este return es para que el navegador deje de estar pendiente del cambio de tamaño
         //si hay eventListener hay return
-        return () => removeEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
 
     }, []);
 

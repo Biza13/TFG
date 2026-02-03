@@ -30,6 +30,7 @@ export default function Header({children}) {
                 <Link to='/register'>Registro</Link>
                 <Link to='/login' className="bg-white text-[#21283a] w-full text-center py-2 rounded-lg">Iniciar sesión</Link>
             </div>
+            
             )}
         </nav>
         );
@@ -46,14 +47,14 @@ export default function Header({children}) {
 
                 <div className='w-full bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
                     <div className='flex gap-10'>
-                        <Link to='/'>Inicio</Link>
-                        <Link to='/services'>Servicios</Link>
-                        <Link to='/ourFriends'>Nuestros amigos</Link>
+                        <Link to='/' className='transition-transform duration-500 active:scale-125'>Inicio</Link>
+                        <Link to='/services' className='transition-transform duration-500 active:scale-125'>Servicios</Link>
+                        <Link to='/ourFriends' className='transition-transform duration-500 active:scale-125'>Nuestros amigos</Link>
                     </div>
 
-                    <div className='flex gap-5 items-center'>
-                        <Link to='/login' className='border border-white px-5 py-3 rounded-lg'>Iniciar sesión</Link>
-                        <Link to='/register'>Registrate</Link>
+                    <div className='flex gap-10 items-center'>
+                        <Link to='/login' className='border border-white px-5 py-3 rounded-lg active:bg-white active:text-[#21283a] transition-colors'>Iniciar sesión</Link>
+                        <Link to='/register' className='transition-transform duration-500 active:scale-125'>Registrate</Link>
                     </div>
                     
                 </div>
@@ -71,18 +72,24 @@ export default function Header({children}) {
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                <div className='w-full bg-[#21283a] h-25 text-white font-bold flex justify-evenly items-center'>
-                    <div className='flex gap-10'>
-                        <Link to='/'>Inicio</Link>
-                        <Link to='/services'>Servicios</Link>
-                        <Link to='/ourFriends'>Nuestros amigos</Link>
+                <div className='w-full flex-col'>
+                    <div className='w-full bg-[#21283a] h-25 text-white font-bold flex justify-evenly items-center'>
+                        <div className='flex gap-10'>
+                            <Link to='/' className='transition-transform duration-500 hover:scale-125'>Inicio</Link>
+                            <Link to='/services' className='transition-transform duration-500 hover:scale-125'>Servicios</Link>
+                            <Link to='/ourFriends' className='transition-transform duration-500 hover:scale-125'>Nuestros amigos</Link>
+                        </div>
+                    
+                        <div className='flex gap-10 items-center'>
+                            <Link to='/login' className='border border-white px-5 py-3 rounded-lg transition-colors duration-700 hover:bg-white hover:text-[#21283a]'>Iniciar sesión</Link>
+                            <Link to='/register' className='transition-transform duration-500 hover:scale-125'>Registrate</Link>
+                        </div>
+                        
                     </div>
 
-                    <div className='flex gap-10 items-center'>
-                        <Link to='/login' className='border border-white px-5 py-3 rounded-lg'>Iniciar sesión</Link>
-                        <Link to='/register'>Registrate</Link>
+                    <div className='flex flex-col items-center text-white'> 
+                        {children}
                     </div>
-                    
                 </div>
                 
             </div>
