@@ -102,7 +102,7 @@ export default function Home() {
     if (isTablet){
         return (
             <>
-                <Header>Inicio</Header>
+                <Header></Header>
 
                 {/* Cabecera Imagen */}
                 {/* Espero que no haya problema con el mt negativo en el chrome se ve bien */}
@@ -244,7 +244,7 @@ export default function Home() {
                         isHome={true}
                         eje={"y"}
                         mov={100}>
-                            Entrenamiento en obediencia avanzada
+                            Preparación para deportes de protección
                         </ServiceCard>
 
                         <ServiceCard 
@@ -253,7 +253,7 @@ export default function Home() {
                         isHome={true}
                         eje={"y"}
                         mov={100}>
-                            Entrenamiento en obediencia avanzada
+                            Solución de problemas de comportamiento
                         </ServiceCard>
 
                         <ServiceCard 
@@ -262,7 +262,7 @@ export default function Home() {
                         isHome={true}
                         eje={"x"}
                         mov={100}>
-                            Entrenamiento en obediencia avanzada
+                            Entrenamiento para pruebas y competiciones
                         </ServiceCard>
 
                     </div>

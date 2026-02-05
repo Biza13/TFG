@@ -45,18 +45,24 @@ export default function Header({children}) {
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                <div className='w-full bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
-                    <div className='flex gap-10'>
-                        <Link to='/' className='transition-transform duration-500 active:scale-125'>Inicio</Link>
-                        <Link to='/services' className='transition-transform duration-500 active:scale-125'>Servicios</Link>
-                        <Link to='/ourFriends' className='transition-transform duration-500 active:scale-125'>Nuestros amigos</Link>
-                    </div>
-
-                    <div className='flex gap-10 items-center'>
-                        <Link to='/login' className='border border-white px-5 py-3 rounded-lg active:bg-white active:text-[#21283a] transition-colors'>Iniciar sesión</Link>
-                        <Link to='/register' className='transition-transform duration-500 active:scale-125'>Registrate</Link>
+                <div className='w-full flex-col'>
+                    <div className='w-full bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
+                        <div className='flex gap-10'>
+                            <Link to='/' className='transition-transform duration-500 active:scale-125'>Inicio</Link>
+                            <Link to='/services' className='transition-transform duration-500 active:scale-125'>Servicios</Link>
+                            <Link to='/ourFriends' className='transition-transform duration-500 active:scale-125'>Nuestros amigos</Link>
+                        </div>
+                    
+                        <div className='flex gap-10 items-center'>
+                            <Link to='/login' className='border border-white px-5 py-3 rounded-lg active:bg-white active:text-[#21283a] transition-colors'>Iniciar sesión</Link>
+                            <Link to='/register' className='transition-transform duration-500 active:scale-125'>Registrate</Link>
+                        </div>
+                        
                     </div>
                     
+                    <div className='flex flex-col items-center text-white'>
+                        {children}
+                    </div>
                 </div>
                 
             </div>
