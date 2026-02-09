@@ -4,7 +4,7 @@ export default function ServiceCard({ title, icon, isHome, children, eje, mov })
 
   const classBox = isHome 
                         ? "ring-gray-600 rounded-2xl w-full md:w-[40%] lg:w-[24%] flex flex-col items-center bg-gray-300 py-3 gap-3 shadow-2xl" 
-                        : "ring-gray-600 rounded-2xl w-full md:w-[45%] lg:w-[40%] flex flex-col items-center gap-3 bg-[#21283a] py-3 shadow-2xl" ; 
+                        : "ring-gray-600 rounded-2xl w-full md:w-[45%] lg:w-[40%] flex flex-col items-center gap-3 bg-[#21283a] py-3 inset-shadow-sm inset-shadow-gray-500/50 ring-1 ring-white/10" ; 
 
   const classIcon = isHome
                           ? "w-25 md:w-40"

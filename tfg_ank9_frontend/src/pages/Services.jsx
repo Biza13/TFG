@@ -205,11 +205,11 @@ export default function Services() {
     return (
       <div className='bg-[#1c2230]'>
           <Header>
-            <p className='font-bold text-3xl mt-5'>Servicios de adiestramiento canino deportivo</p>
-            <p>Programas adaptados al nivel, desciplina y objetivos de cada perro</p>
+              <p className='font-bold text-3xl mt-5'>Servicios de adiestramiento canino deportivo</p>
+              <p>Programas adaptados al nivel, desciplina y objetivos de cada perro</p>
           </Header>
             
-          <div className='w-[95%] m-auto flex gap-5 my-5 flex-wrap justify-center'>
+          <div className='w-[95%] m-auto flex gap-10 my-5 flex-wrap justify-center'>
               <ServiceCard 
               title="Obediencia deportiva"
               icon ={iconDog}

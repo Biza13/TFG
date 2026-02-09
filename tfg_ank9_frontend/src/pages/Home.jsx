@@ -7,6 +7,7 @@ import iconDog from '../assets/img/iconDog1.png'
 import iconShield from '../assets/img/iconShield1.png'
 import iconCup from '../assets/img/iconCup1.png'
 import iconPaw from '../assets/img/iconPaw1.png'
+import {animate, motion} from 'framer-motion'
 
 export default function Home() {
 
@@ -112,13 +113,23 @@ export default function Home() {
                         
                         <div className='w-[90%] py-10 text-white flex flex-col m-auto text-center'>
                         
-                            <div className='font-bold text-3xl'>
+                            <motion.div className='font-bold text-5xl'
+                            initial={{opacity:0, scale:0.5, y:-500}}
+                            animate={{opacity:1, scale:1, y:0}}
+                            /* para efecto rebote: el type:spring hace el efecto rebote, el stiffness el la velocidad (cuanto más alto mas rapido), 
+                            y el damping (cuanto más bajo más rebote) */
+                            transition={{duration:1.5, type:"spring", stiffness: 80, damping: 7}}
+                            >
                                 Adiestramiento canino deportivo profesional
-                            </div>
+                            </motion.div>
                         
-                            <div className='text-2xl mt-10'>
+                            <motion.div className='text-4xl mt-10'
+                            initial={{opacity:0, scale:0.5, x:500}}
+                            animate={{opacity:1, scale:1, x:0}}
+                            transition={{duration:1.5, type:"spring", stiffness: 80, damping:7, delay:1}}
+                            >
                                 Disciplica, control y rendimiento para perros deportivos y de trabajo
-                            </div>
+                            </motion.div>
                         
                         </div>
                         
@@ -199,13 +210,23 @@ export default function Home() {
                         
                         <div className='w-[40%] py-20 pl-20 text-white'>
                         
-                            <div className='font-bold text-5xl'>
+                            <motion.div className='font-bold text-5xl'
+                            initial={{opacity:0, scale:0.5, y:-500}}
+                            animate={{opacity:1, scale:1, y:0}}
+                            /* para efecto rebote: el type:spring hace el efecto rebote, el stiffness el la velocidad (cuanto más alto mas rapido), 
+                            y el damping (cuanto más bajo más rebote) */
+                            transition={{duration:1.5, type:"spring", stiffness: 80, damping: 7}}
+                            >
                                 Adiestramiento canino deportivo profesional
-                            </div>
+                            </motion.div>
                         
-                            <div className='text-4xl mt-10'>
+                            <motion.div className='text-4xl mt-10'
+                            initial={{opacity:0, scale:0.5, x:500}}
+                            animate={{opacity:1, scale:1, x:0}}
+                            transition={{duration:1.5, type:"spring", stiffness: 80, damping:7, delay:1}}
+                            >
                                 Disciplica, control y rendimiento para perros deportivos y de trabajo
-                            </div>
+                            </motion.div>
                         
                         </div>
 
