@@ -15,10 +15,13 @@ export default function Services() {
   if (isMobile) {
     return (
       <div className='bg-[#1c2230]'>
+
+        {/* Header */}
         <Header>
           Servicios
         </Header>
           
+        {/* Body */}
         <div className='w-[90%] m-auto flex gap-5 my-5 flex-wrap justify-center'>
             <ServiceCard 
             title="Obediencia deportiva"
@@ -101,6 +104,7 @@ export default function Services() {
             </ServiceCard>
         </div>
 
+      {/* Footer */}
       <Footer></Footer>
     </div>
     )
@@ -109,11 +113,14 @@ export default function Services() {
   if (isTablet) {
     return (
       <div className='bg-[#1c2230]'>
+
+        {/* Header */}
         <Header>
           <p className='font-bold text-3xl mt-5'>Servicios de adiestramiento canino deportivo</p>
           <p>Programas adaptados al nivel, desciplina y objetivos de cada perro</p>
         </Header>
           
+        {/* Body */}
         <div className='w-[95%] m-auto flex gap-5 my-5 flex-wrap justify-center'>
             <ServiceCard 
             title="Obediencia deportiva"
@@ -196,6 +203,7 @@ export default function Services() {
             </ServiceCard>
         </div>
 
+      {/* Footer */}
       <Footer></Footer>
     </div>
     )
@@ -204,11 +212,14 @@ export default function Services() {
   if (isDesktop) {
     return (
       <div className='bg-[#1c2230]'>
+
+          {/* Header */}
           <Header>
               <p className='font-bold text-3xl mt-5'>Servicios de adiestramiento canino deportivo</p>
               <p>Programas adaptados al nivel, desciplina y objetivos de cada perro</p>
           </Header>
             
+          {/* Body */}
           <div className='w-[95%] m-auto flex gap-10 my-5 flex-wrap justify-center'>
               <ServiceCard 
               title="Obediencia deportiva"
@@ -291,6 +302,7 @@ export default function Services() {
               </ServiceCard>
           </div>
 
+        {/* Footer */}
         <Footer></Footer>
       </div>
     )

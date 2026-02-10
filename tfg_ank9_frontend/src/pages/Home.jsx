@@ -16,7 +16,7 @@ export default function Home() {
     if (isMobile){
         return (
             <>
-
+                {/* Header */}
                 <Header>Inicio</Header>
 
                 {/* Cabecera Imagen */}
@@ -103,6 +103,7 @@ export default function Home() {
     if (isTablet){
         return (
             <>
+                {/* Header */}
                 <Header></Header>
 
                 {/* Cabecera Imagen */}
@@ -206,8 +207,10 @@ export default function Home() {
                     {/* overlay para la capa oscura de encima de la imagen */}
                     <div className="bg-gradient-to-r from-black/80 via-black/40 to-transparent">
                     
+                        {/* Header */}
                         <Header></Header>
                         
+                        {/* Cabecera imagen */}
                         <div className='w-[40%] py-20 pl-20 text-white'>
                         
                             <motion.div className='font-bold text-5xl'
