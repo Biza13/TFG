@@ -1,5 +1,5 @@
 import React from "react";
-//para el carrousel
+//para el carousel
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 
@@ -11,7 +11,7 @@ export default function Carousel() {
     y el emblaApi tiene las funciones para mover el carousel (los botones)
     el loop: true es para que cuando llegue a la ultima tarjeta se vuelva a la primera y el autoplay es para que se mueva solo */
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
-    const cardStyle = "w-[50%] shrink-0 bg-[#21283a] h-80 rounded-2xl flex items-center justify-center inset-shadow-sm inset-shadow-gray-500/50";
+    const cardStyle = "w-full md:w-[55%] lg:w-[60%] shrink-0 bg-[#21283a] h-60 md:h-70 lg:h-100 rounded-2xl flex items-center justify-center inset-shadow-sm inset-shadow-gray-500/50";
 
     /* Función para ir hacia atrás */
     const backwards = () => {
@@ -25,10 +25,10 @@ export default function Carousel() {
 
   return (
     <>
-      <div className="w-[90%] overflow-hidden m-auto rounded-2xl p-5 shadow-sm shadow-white"ref={emblaRef}>
+      <div className="w-[90%] overflow-hidden m-auto rounded-2xl p-5 shadow-sm shadow-white my-5"ref={emblaRef}>
 
         {/* Div de las imgs o videos */}
-        <div className="flex w-full gap-5 pl-5">
+        <div className="flex w-full gap-5 pl-4">
 
           <div className={cardStyle}>
             Tarjeta 1

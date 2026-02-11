@@ -76,7 +76,7 @@ export default function Header({children}) {
                     </div>
                     
                     {/* Children para textos */}
-                    <div className='flex flex-col items-center text-white'>
+                    <div className='flex flex-col items-center justify-center text-white text-center gap-5'>
                         {children}
                     </div>
                 </div>
