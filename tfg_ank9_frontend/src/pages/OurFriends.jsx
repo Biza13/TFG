@@ -57,7 +57,7 @@ export default function OurFriends() {
         {/* Bloque bajo prueba */}
         <div className='w-[90%] m-auto grid grid-cols-2 md:grid-cols-3 gap-5 justify-center items-center my-5 mt-8'>
           {imgsGallery.map((item, index) => {
-            return <img key={index} src={item.pi} alt={'image '+index} onClick={() => setSelectedImg(item.pi)} className="w-full aspect-video object-contain rounded-xl ring ring-white shadow-md shadow-white"></img>
+            return <img key={index} src={item.pi} alt={'image '+index} onClick={() => setSelectedImg(item.pi)} className="w-full aspect-video object-contain rounded-xl ring ring-white shadow-md shadow-white hover:scale-105 transition-transform"></img>
           })}
         </div>
 

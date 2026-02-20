@@ -50,6 +50,8 @@ security:
         - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
         # PERMITIR REGISTRO (Crear usuario)
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
+        #Esta siguiente linea es para hacer pruebas y poder ver los usuarios mediante url
+        #- { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [GET] }
         # Accesos publicos
         - { path: ^/api/services, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/galleries, roles: PUBLIC_ACCESS, methods: [GET] }
