@@ -1,0 +1,109 @@
+<div className='w-[90%] flex gap-5 m-auto my-5 justify-between'>
+
+          {/* Datos dueño */}
+          <section className='w-[46%]'>
+            
+            <p className='text-2xl text-white font-bold text-center mb-3'>Datos personales</p>
+
+            <div className='w-full rounded bg-[#8a8a8a] p-5 flex flex-wrap justify-between'>
+            
+              {/* Form1 datos obligatorios */}
+              <form action="" className='flex flex-col gap-5 w-[50%] px-2'>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Nombre completo <p className='text-red-600'>*</p></label>
+                  <input type="text" placeholder='Full name' onChange={e => setPersonName(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Correo <p className='text-red-600'>*</p></label>
+                  <input type="email" placeholder='example@example.com' onChange={e => setEmail(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Contraseña <p className='text-red-600'>*</p></label>
+                  <input type="password" placeholder='Password' onChange={e => setPassword(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+              </form>
+            
+              {/* Form2 datos NO obligatorios */}
+              <form action="" className='flex flex-col gap-5 w-[50%] px-2'>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Calle</label>
+                  <input type="text" placeholder='Street' onChange={e => setStreet(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Ciudad/Población</label>
+                  <input type="text" placeholder='City' onChange={e => setCity(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Fecha de nacimiento</label>
+                  <input type="date" onChange={e => setBirthDate(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+              </form>
+            
+              {/* Form3 imagen */}
+              <form action="" className='w-[90%] m-auto flex flex-col px-2 justify-center items-center mt-5'>
+                <p>Subir Foto</p>
+                <label 
+                  htmlFor="person-img" 
+                  className="cursor-pointer ring-2 bg-[#21283a] hover:bg-white text-white hover:text-[#21283a] hover:font-bold transition-all duration-300 py-2 px-6 rounded-lg shadow-md flex items-center gap-2"
+                >
+                  Seleccionar archivo
+                </label>
+
+                <input id="person-img" type="file" accept="image/*" onChange={(e) => setPersonImg(e.target.files[0])} className='hidden' />
+              </form>
+            
+            </div>
+          </section>
+
+          {/* Datos perro */}
+          <section className='w-[46%]'>
+            
+            <p className='text-2xl text-white font-bold text-center mb-3'>Datos del perro</p>
+
+            <div className='w-full rounded bg-[#8a8a8a] p-5 flex flex-wrap justify-between'>
+            
+              {/* Form1 datos obligatorios */}
+              <form action="" className='flex flex-col gap-5 w-[50%] px-2'>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Nombre <p className='text-red-600'>*</p></label>
+                  <input type="text" placeholder='Name' onChange={e => setDogName(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Raza</label>
+                  <input type="text" placeholder='Breed' onChange={e => setBreed(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+                <div>
+                  <label htmlFor="" className='flex gap-2'>Fecha de nacimiento</label>
+                  <input type="date" onChange={e => setDogBirthDate(e.target.value)} className='w-[90%] bg-white rounded p-2 focus:outline-none' />
+                </div>
+            
+              </form>
+            
+              {/* Form2 imagen */}
+              <form action="" className='w-[50%] m-auto flex flex-col px-2 justify-center items-center'>
+                <p>Subir Foto</p>
+                <label 
+                  htmlFor="dog-img" 
+                  className="cursor-pointer ring-2 bg-[#21283a] hover:bg-white text-white hover:text-[#21283a] hover:font-bold transition-all duration-300 py-2 px-6 rounded-lg shadow-md flex items-center gap-2"
+                >
+                  Seleccionar archivo
+                </label>
+
+                <input id="dog-img" type="file" accept="image/*" onChange={(e) => setDogImg(e.target.files[0])} className='hidden' />
+              </form>
+            
+            </div>
+          </section>
+
+        </div>
