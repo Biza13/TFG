@@ -42,6 +42,12 @@ class Service
     #[ORM\Column(length: 255)]
     private ?string $shortDescription = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $titleFeatures = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $titleFeatures2 = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +121,30 @@ class Service
     public function setShortDescription(string $shortDescription): static
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getTitleFeatures(): ?string
+    {
+        return $this->titleFeatures;
+    }
+
+    public function setTitleFeatures(?string $titleFeatures): static
+    {
+        $this->titleFeatures = $titleFeatures;
+
+        return $this;
+    }
+
+    public function getTitleFeatures2(): ?string
+    {
+        return $this->titleFeatures2;
+    }
+
+    public function setTitleFeatures2(?string $titleFeatures2): static
+    {
+        $this->titleFeatures2 = $titleFeatures2;
 
         return $this;
     }

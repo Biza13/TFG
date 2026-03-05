@@ -46,6 +46,7 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         # Permite ver la interfaz de la API y los contextos. Rutas abiertas
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register-family, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS }
         - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
         # PERMITIR REGISTRO (Crear usuario)

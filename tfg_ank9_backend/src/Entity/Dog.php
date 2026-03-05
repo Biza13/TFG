@@ -15,10 +15,15 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
+// Uses para la parte de las subidas de las fotos de usuarios
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: DogRepository::class)]
 //Para la api platform
 #[ApiResource]
+// Para el vich (las imagenes)
+#[Vich\Uploadable]
 class Dog
 {
     #[ORM\Id]
@@ -41,6 +46,13 @@ class Dog
     #[ORM\ManyToOne(inversedBy: 'dogs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    // Campos para las imagenes
+    #[Vich\UploadableField(mapping: 'dog_images', fileNameProperty: 'picture_route')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Gallery>
@@ -94,18 +106,6 @@ class Dog
         return $this;
     }
 
-    public function getPictureRoute(): ?string
-    {
-        return $this->picture_route;
-    }
-
-    public function setPictureRoute(?string $picture_route): static
-    {
-        $this->picture_route = $picture_route;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -144,6 +144,46 @@ class Dog
                 $gallery->setDog(null);
             }
         }
+
+        return $this;
+    }
+
+    // Getters y setters para las imagenes de los perros
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // Es vital actualizar esta fecha para que Doctrine sepa que la entidad ha cambiado
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setPictureRoute(?string $picture_route): static
+    {
+        $this->picture_route = $picture_route;
+        return $this;
+    }
+
+    public function getPictureRoute(): ?string
+    {
+        return $this->picture_route;
+    }
+
+    // Esto es solo por si se actualiza la foto, para que doctrine sepa que aunque no hay ningun cambio en la bd porque el archivo no se guarda en la bd si se cambia el nombre
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
