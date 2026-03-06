@@ -3,13 +3,38 @@ import { Link } from "react-router";
 //para la linea de debajo de la página donde estas
 import { NavLink } from 'react-router-dom';
 import useDeviceType from '../hooks/useDeviceType';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ham from '../assets/img/ham.png'
 
 export default function Header({children}) {
 
     const { isMobile, isTablet, isDesktop } = useDeviceType();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const [isLogged, setIsLogged] = useState('');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+
+    const [fotoPerfil, setFotoPerfil] = useState('');
+
+    // Definimos la base de la URL de tu API, cuando pongamos dominio habra que cambiarlo
+    // Esto es para poner la foto de perfil
+    const API_BASE_URL = 'http://localhost:8000';
+
+    useEffect (() => {
+        // Cada vez que cargue la página miramos el localStorage
+        const token = localStorage.getItem('token');
+        //const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName')
+        const userPicture = localStorage.getItem('userPicture');
+
+        if (token) {
+            setIsLogged(true);
+            //setEmail(userEmail);
+            setFotoPerfil(userPicture);
+            setName(userName);
+        }
+    }, [])
 
     //Estilos para que se quede subrayado la página en la que estás.
     const onStyle = 'transition-transform duration-500 active:scale-125 border-b-3';
@@ -67,12 +92,41 @@ export default function Header({children}) {
                             <NavLink to='/services' className={ ({isActive}) => isActive ? onStyle : offStyle }>Servicios</NavLink>
                             <NavLink to='/ourFriends' className={ ({isActive}) => isActive ? onStyle : offStyle }>Nuestros amigos</NavLink>
                         </div>
-                    
-                        <div className='flex gap-10 items-center'>
-                            <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg active:bg-white active:text-[#21283a] transition-colors'>Iniciar sesión</NavLink>
-                            <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
-                        </div>
-                        
+
+                        {
+                            isLogged ? (
+                                <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center w-fit shadow-xl">
+                                    {/* Foto de usuario (de momento una genérica o la que guardes) */}
+                                    <div className='flex justify-center items-center gap-2'>
+                                        <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
+                                            {
+                                                fotoPerfil ? (
+                                                    <img 
+                                                    src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
+                                                    className="w-10 h-10 rounded-full object-cover" 
+                                                    alt="Avatar"
+                                                    />
+                                                ) : (
+                                                    <span className="text-2xl">👤</span> 
+                                                )
+                                            }
+                                            {/* <span className="text-2xl">👤</span>  */}
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h2 className="font-bold text-[#1c2230]">Bienvenid@</h2>
+                                        <p className="text-[#21283a] text-sm text italic">{name}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className='flex gap-10 items-center'>
+                                    <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg active:bg-white active:text-[#21283a] transition-colors'>Iniciar sesión</NavLink>
+                                    <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
+                                </div>
+                            )
+                        }
+
                     </div>
                     
                     {/* Children para textos */}

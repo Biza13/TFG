@@ -80,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Dog>
      */
-    #[ORM\OneToMany(targetEntity: Dog::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Dog::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $dogs;
 
     public function __construct()

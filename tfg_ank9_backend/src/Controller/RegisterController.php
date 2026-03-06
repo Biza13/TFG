@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+#use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class RegisterController extends AbstractController{
 
@@ -68,6 +69,25 @@ class RegisterController extends AbstractController{
         $em->flush();
 
         return new JsonResponse(['status' => 'Familia registrada!'], 201);
+    }
+
+    # Para el delete del ususario
+    #[Route('/api/user/{id}', name: 'app_user_delete', methods: ['DELETE'])]
+    public function deleteUser(int $id, EntityManagerInterface $em): Response
+    {
+        // Buscamos al usuario por su ID
+        $user = $em->getRepository(User::class)->find($id);
+
+        // Si no hay usuario lanza error
+        if (!$user) {
+            return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        // Borrar usuario en la bd
+        $em->remove($user);
+        $em->flush();
+
+        return new JsonResponse(['status' => 'Usuario, sus perros y sus fotos eliminados correctamente!'], 200);
     }
 
 }
