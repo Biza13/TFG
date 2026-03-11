@@ -18,10 +18,11 @@ export default function LogIn() {
         password: password
       });
 
-      // Guardamos el token, la imagen y el nombre en una variable
+      // Guardamos el token, la imagen, el nombre y el rol en una variable
       const token = response.data.token;
       const userPicture = response.data.picture_route;
       const userName = response.data.name;
+      const userRole = response.data.role;
 
       // Y lo guardamos en el localStorage
       localStorage.setItem('token', token);
@@ -30,9 +31,11 @@ export default function LogIn() {
       // Guardamos la foto y el noombre el cual si que sacamos de la bd
       localStorage.setItem('userPicture', userPicture);
       localStorage.setItem('userName', userName);
+      // Guardar el rol
+      localStorage.setItem('role', userRole);
 
       //Cuando haces login, symfony te devuelve un json con una sola clave (el token).
-      alert('Login correcto. Mira la consola (F12)');
+      //alert('Login correcto.');
 
       // Redirigir a Home
       window.location.href = '/';

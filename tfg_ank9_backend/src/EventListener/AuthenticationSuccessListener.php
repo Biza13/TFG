@@ -21,6 +21,7 @@ class AuthenticationSuccessListener
         $data['email'] = $user->getUserIdentifier();
         $data['picture_route'] = $user->getPictureRoute(); 
         $data['name'] = $user->getName();
+        $data['role'] = $user->getRole();
 
         $event->setData($data);
     }

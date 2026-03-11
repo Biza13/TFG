@@ -8,10 +8,13 @@ import iconShield from '../assets/img/iconShield1.png'
 import iconCup from '../assets/img/iconCup1.png'
 import iconPaw from '../assets/img/iconPaw1.png'
 import {animate, motion} from 'framer-motion'
+import { useState } from 'react';
 
 export default function Home() {
 
     const {isMobile, isTablet, isDesktop} = useDeviceType();
+
+    const role = localStorage.getItem('role');
 
     if (isMobile){
         return (
