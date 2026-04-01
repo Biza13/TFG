@@ -5,14 +5,6 @@ import api from '../api/axios';
 
 export default function Register() {
 
-  /* States de la persona */
-  const [personName, setPersonName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [personImg, setPersonImg] = useState("");
   /* states del perro */
   const [dogName, setDogName] = useState("");
   const [breed, setBreed] = useState("");
@@ -25,28 +17,18 @@ export default function Register() {
     // Crear el "contenedor" para enviar datos y archivos. Si solo fuesen datos mandariamos un json pero al tener archivos ha de ser un formData
     const formData = new FormData();
 
-    // Metemos los datos de la persona con el append dando clave valor
-    // El nombre entre comillas debera de ser el mismo en la entidad
-    formData.append('name', personName);
-    formData.append('email', email);
-    formData.append('password', password);
-    // Si los campos pueden ser null hay que poner un if, para mandar un null y  no una cadena vacia
-    if (street) formData.append('address', street);
-    if (city) formData.append('city', city);
-    if (birthDate) formData.append('birth_date', birthDate);
-    if (personImg) formData.append('picture_route', personImg);
-
     // Metemos los datos del perro igual que los de la persona
-    /* formData.append('name', dogName);
+    // El nombre entre comillas debera de ser el mismo en la entidad
+    formData.append('name', dogName);
     if (breed) formData.append('breed', breed);
     if (dogBirthDate) formData.append('birth_date', dogBirthDate);
-    if (dogImg) formData.append('picture_route', dogImg); */
+    if (dogImg) formData.append('picture_route', dogImg);
 
     try {
       const response = await api.post('/users', formData);
       // Comsole log de prueba
-      console.log('¡Registro exitoso!', response.data);
-      alert('Registro completado correctamente');
+      console.log('¡Registro exitoso del perro!', response.data);
+      alert('Registro perruno completado correctamente');
 
       // Redirigir a home una vez finalizado el registro
       window.location.href = '/';

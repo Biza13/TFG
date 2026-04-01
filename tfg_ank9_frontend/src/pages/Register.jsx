@@ -5,7 +5,7 @@ import api from '../api/axios';
 
 export default function Register() {
 
-  /* States de la persona */
+  /* States del usuario */
   const [personName, setPersonName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,11 +13,6 @@ export default function Register() {
   const [city, setCity] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [personImg, setPersonImg] = useState("");
-  /* states del perro */
-  const [dogName, setDogName] = useState("");
-  const [breed, setBreed] = useState("");
-  const [dogBirthDate, setDogBirthDate] = useState("");
-  const [dogImg, setDogImg] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita que la página se recargue
@@ -35,12 +30,6 @@ export default function Register() {
     if (city) formData.append('city', city);
     if (birthDate) formData.append('birth_date', birthDate);
     if (personImg) formData.append('picture_route', personImg);
-
-    // Metemos los datos del perro igual que los de la persona
-    /* formData.append('name', dogName);
-    if (breed) formData.append('breed', breed);
-    if (dogBirthDate) formData.append('birth_date', dogBirthDate);
-    if (dogImg) formData.append('picture_route', dogImg); */
 
     try {
       const response = await api.post('/users', formData);
