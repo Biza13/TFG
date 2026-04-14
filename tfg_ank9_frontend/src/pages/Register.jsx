@@ -13,36 +13,62 @@ export default function Register() {
   const [city, setCity] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [personImg, setPersonImg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita que la página se recargue
+    setIsLoading(true);
     
     // Crear el "contenedor" para enviar datos y archivos. Si solo fuesen datos mandariamos un json pero al tener archivos ha de ser un formData
     const formData = new FormData();
 
     // Metemos los datos de la persona con el append dando clave valor
     // El nombre entre comillas debera de ser el mismo en la entidad
-    formData.append('name', personName);
-    formData.append('email', email);
-    formData.append('password', password);
+    formData.append('fullName', personName);
+    formData.append('email', email.trim());
+    formData.append('password', password.trim());
     // Si los campos pueden ser null hay que poner un if, para mandar un null y  no una cadena vacia
     if (street) formData.append('address', street);
     if (city) formData.append('city', city);
     if (birthDate) formData.append('birth_date', birthDate);
-    if (personImg) formData.append('picture_route', personImg);
+    if (personImg) formData.append('imageFile', personImg);
 
     try {
-      const response = await api.post('/users', formData);
-      // Comsole log de prueba
-      console.log('¡Registro exitoso!', response.data);
-      alert('Registro completado correctamente');
+      // Registro del usuario
+      const response = await api.post('/register-user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      // Redirigir a registrar perro una vez finalizado el registro
+      // Esperar un poco antes de loguear
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Login automatico después del registro
+      const loginResponse = await api.post('/login_check', {
+          email: email.trim(),
+          password: password
+      }, {
+          headers: {
+              'Content-Type': 'application/json' 
+          }
+      });
+
+      // Guardar el token en el local storage para poder registrar a los perros y el nombre para el header
+      const token = loginResponse.data.token;
+      const userName = response.data.name;
+      const userPicture = response.data.picture_route;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userPicture', userPicture);
+
+      // Redirigir al registro de perros
       window.location.href = '/dogRegister';
 
     } catch (error) {
       console.error('Error al registrar:', error.response?.data || error.message);
-      alert('Hubo un error en el registro. Revisa la consola.');
+      alert('Hubo un error en el registro. Revisa la consola.'+ (error.response?.data?.detail));
+      setIsLoading(false);
     }
   };
 
@@ -134,6 +160,17 @@ export default function Register() {
         <Footer></Footer>
       
       </div>
+
+      {isLoading && (
+        /* en inset-0 para que ocupe toda la pantalla (top-0 right-0 bottom-0 left-0) */
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+          {/* defino tamaño del div size y el animate-spin hace girar el div, lo redondeamos con rounded-full, le ponemos borde con border-8,
+          color del borde con border-gray y el color del borde top de azum y como esta girando con el spin el borde top se va moviendo */}
+          <div className='size-16 animate-spin rounded-full border-8 border-white border-t-blue-400'></div>
+          <p className="mt-4 text-xl font-bold text-white">Registrando usuario...</p>
+        </div>
+      )}
+
     </>
   )
 }

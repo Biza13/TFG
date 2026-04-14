@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfg-backend-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tfg-backend
+  template:
+    metadata:
+      labels:
+        app: tfg-backend
+    spec:
+      containers:
+        - name: php-container
+          image: TU_ID_CUENTA.dkr.ecr.REGION.amazonaws.com/tfg-backend:latest
+          ports:
+            - containerPort: 8000 # El que configuramos en el Dockerfile
+          env:
+            - name: DATABASE_URL
+              value: "mysql://admin:password@TU_RDS_ENDPOINT:3306/tfg_db"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfg-backend-service
+spec:
+  selector:
+    app: tfg-backend # Debe coincidir exactamente con el label del Deployment
+  ports:
+    - protocol: TCP
+      port: 80         
+      targetPort: 8000 # Puerto donde escucha Symfony (el que pusimos en Docker)
+  #type: ClusterIP      # solo visible dentro del clúster, es decir solo el frontend podra acceder a el (back)
+  type: LoadBalancer

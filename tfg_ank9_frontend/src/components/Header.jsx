@@ -243,7 +243,7 @@ export default function Header({children}) {
                                         <div className='flex justify-center items-center gap-2'>
                                             <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
                                                 {
-                                                    fotoPerfil ? (
+                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                         <img 
                                                         src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
                                                         className="w-10 h-10 rounded-full object-cover" 
@@ -253,7 +253,6 @@ export default function Header({children}) {
                                                         <span className="text-2xl">👤</span> 
                                                     )
                                                 }
-                                                {/* <span className="text-2xl">👤</span>  */}
                                             </div>
                                         </div>
                                         

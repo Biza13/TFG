@@ -10,23 +10,35 @@ export default function Register() {
   const [breed, setBreed] = useState("");
   const [dogBirthDate, setDogBirthDate] = useState("");
   const [dogImg, setDogImg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita que la página se recargue
+    setIsLoading(true);
     
     // Crear el "contenedor" para enviar datos y archivos. Si solo fuesen datos mandariamos un json pero al tener archivos ha de ser un formData
     const formData = new FormData();
 
     // Metemos los datos del perro igual que los de la persona
     // El nombre entre comillas debera de ser el mismo en la entidad
-    formData.append('name', dogName);
+    formData.append('dogName', dogName);
     if (breed) formData.append('breed', breed);
     if (dogBirthDate) formData.append('birth_date', dogBirthDate);
-    if (dogImg) formData.append('picture_route', dogImg);
+    if (dogImg) formData.append('dogImageFile', dogImg);
 
     try {
-      const response = await api.post('/users', formData);
-      // Comsole log de prueba
+      // Recuperamos el token que guardamos en el registro del usuario
+      const token = localStorage.getItem('token');
+
+      // Enviar la petición con el token en el header para poder registrar al perro y que symfony sepa quien es el dueño al registrarlo
+      const response = await api.post('/register-dog', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      // Console log de prueba
       console.log('¡Registro exitoso del perro!', response.data);
       alert('Registro perruno completado correctamente');
 
@@ -36,6 +48,7 @@ export default function Register() {
     } catch (error) {
       console.error('Error al registrar:', error.response?.data || error.message);
       alert('Hubo un error en el registro. Revisa la consola.');
+      setIsLoading(false);
     }
   };
 
@@ -107,6 +120,16 @@ export default function Register() {
         <Footer></Footer>
       
       </div>
+
+      {isLoading && (
+        /* en inset-0 para que ocupe toda la pantalla (top-0 right-0 bottom-0 left-0) */
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+          {/* defino tamaño del div size y el animate-spin hace girar el div, lo redondeamos con rounded-full, le ponemos borde con border-8,
+          color del borde con border-gray y el color del borde top de azum y como esta girando con el spin el borde top se va moviendo */}
+          <div className='size-16 animate-spin rounded-full border-8 border-white border-t-blue-400'></div>
+          <p className="mt-4 text-xl font-bold text-white">Iniciando sesión...</p>
+        </div>
+      )}
     </>
   )
 }

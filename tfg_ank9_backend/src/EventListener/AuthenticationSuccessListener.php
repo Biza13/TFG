@@ -19,9 +19,11 @@ class AuthenticationSuccessListener
 
         // Aquí añadimos los campos que queremos que React reciba
         $data['email'] = $user->getUserIdentifier();
-        $data['picture_route'] = $user->getPictureRoute(); 
         $data['name'] = $user->getName();
-        $data['role'] = $user->getRole();
+        $data['role'] = $user->getRoles();
+
+        // Usamos una comprobación de seguridad para la foto
+        $data['picture_route'] = method_exists($user, 'getPictureRoute') ? $user->getPictureRoute() : "";
 
         $event->setData($data);
     }

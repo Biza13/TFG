@@ -15,18 +15,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegisterController extends AbstractController{
 
-    #[Route('/api/register-family', name: 'app_register_family', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
+    // 1. FUNCIÓN PARA REGISTRAR SOLO AL USUARIO
+    #[Route('/api/register-user', name: 'app_register_user', methods: ['POST'])]
+    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
     {
         // Extraemos los textos del formData de react ($request->request)
         $email = $request->request->get('email');
-        $password = $request->request->get('password');
+        $password = preg_replace('/\s+/', '', $request->request->get('password'));
         $name = $request->request->get('fullName');
-        
+
         // Extraemos los archivos del formData de react ($request->files)
         //Para lo que necesitaremos instalar VichUploaderBundle, sino hay que hacerlo de forma manual (mucho mas código)
         $personImg = $request->files->get('imageFile');
-        $dogImg = $request->files->get('dogImageFile');
 
         // De no tener el VichUploaderBundle instalado deberiamos de hacer esto:
         /* if ($personImg) {
@@ -43,51 +43,109 @@ class RegisterController extends AbstractController{
             $user->setImageName($newFilename); 
         } */
 
-        // 3. Crear y configurar la entidad USER
+        // Validar que estan todos los datos obligatorios
+        if (!$email || !$password || !$name) {
+            return new JsonResponse(['error' => 'Faltan datos obligatorios del usuario'], 400);
+        }
+
+        // Crar y configurar la entidad User
         $user = new User();
         $user->setEmail($email);
         $user->setName($name);
-        $user->setPassword($hasher->hashPassword($user, $password));
+        $user->setRoles(['ROLE_USER']);
+
+        // Hashear la contraseña
+        $hashedPassword = $hasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
 
         if ($personImg) {
             $user->setImageFile($personImg);
         }
-        
-        // 4. Crear y configurar la entidad DOG
+
+        // Guardad Usuario en la BD
+        try {
+            $em->persist($user);
+            $em->flush();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'El email ya está registrado o hubo un error'], 409);
+        }
+
+        return new JsonResponse([
+            'status' => 'Usuario registrado!',
+            'userId' => $user->getId() 
+        ], 201);
+    }
+
+    // FUNCIÓN PARA REGISTRAR AL PERRO Y VINCULARLO
+    #[Route('/api/register-dog', name: 'app_register_dog', methods: ['POST'])]
+    public function registerDog(Request $request, EntityManagerInterface $em): Response
+    {
+
+        // Conseguit el id del usuario con el token
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Si el token no es válido o no existe, $user será null
+        if (!$user) {
+            return new JsonResponse(['error' => 'No autorizado. Debes estar logueado.'], 401);
+        }
+
+        // Extraer los datos del formulario de React
+        $dogName = $request->request->get('dogName');
+        $breed = $request->request->get('breed');
+        $dogImg = $request->files->get('dogImageFile');
+
+        if (!$dogName) {
+            return new JsonResponse(['error' => 'Faltan el nombre del perro'], 400);
+        }
+
         $dog = new Dog();
-        $dog->setName($request->request->get('dogName'));
+        $dog->setName($dogName);
         $dog->setBreed($request->request->get('breed'));
-        $dog->setUser($user); // Establecemos la relación
+        $dog->setUser($user); // Le asignamos el dueño con el token
 
         if ($dogImg) {
             $dog->setImageFile($dogImg);
         }
 
-        // 5. Guardar todo en la BD
-        $em->persist($user);
         $em->persist($dog);
         $em->flush();
 
-        return new JsonResponse(['status' => 'Familia registrada!'], 201);
+        return new JsonResponse(['status' => 'Perro registrado con éxito!'], 201);
     }
 
-    # Para el delete del ususario
+    // Función para borrar usuario
     #[Route('/api/user/{id}', name: 'app_user_delete', methods: ['DELETE'])]
     public function deleteUser(int $id, EntityManagerInterface $em): Response
     {
-        // Buscamos al usuario por su ID
         $user = $em->getRepository(User::class)->find($id);
 
-        // Si no hay usuario lanza error
         if (!$user) {
             return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
         }
 
-        // Borrar usuario en la bd
         $em->remove($user);
         $em->flush();
 
-        return new JsonResponse(['status' => 'Usuario, sus perros y sus fotos eliminados correctamente!'], 200);
+        return new JsonResponse(['status' => 'Usuario y datos eliminados correctamente!'], 200);
     }
 
+    // Metodo temporal para comprobar el hasher
+    /* #[Route('/api/test-password', name: 'test_password')]
+    public function testPassword(UserPasswordHasherInterface $hasher): Response
+    {
+        $user = new User();
+        $passwordQueYoEscribo = "123456"; // Pon aquí lo que escribes en el input
+        
+        // El hash que ves en el JSON de la API para Pepito (CÓPIALO TAL CUAL)
+        $hashDeLaBD = '$2y$13$f5.C7cLw083jnN05iqciDOag3Gc4e3OsMAZFPxP1peYxDhban5v7i'; 
+
+        $esValida = $hasher->isPasswordValid($user, $passwordQueYoEscribo, $hashDeLaBD);
+
+        return new JsonResponse([
+            'coincide' => $esValida,
+            'algoritmo_esperado' => 'bcrypt/auto',
+            'hash_en_bd' => $hashDeLaBD
+        ]);
+    } */
 }

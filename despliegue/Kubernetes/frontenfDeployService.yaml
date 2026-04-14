@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfg-frontend-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tfg-frontend
+  template:
+    metadata:
+      labels:
+        app: tfg-frontend
+    spec:
+      containers:
+        - name: nginx-container
+          # Imagen que subiremos a ECR con los archivos de React dentro
+          image: TU_ID_CUENTA.dkr.ecr.REGION.amazonaws.com/tfg-frontend:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfg-frontend-service
+spec:
+  selector:
+    app: tfg-frontend
+  ports:
+    - protocol: TCP
+      port: 80        # Puerto por el que entrarás desde el navegador
+      targetPort: 80  # Puerto donde escucha tu Nginx
+  type: LoadBalancer  # <--- ESTO te da la URL pública en AWS

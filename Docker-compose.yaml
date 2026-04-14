@@ -1,0 +1,48 @@
+services:
+  # 1. LA BASE DE DATOS (MySQL)
+  db:
+    image: mysql:8.0.32
+    container_name: tfg-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: tfg_adiestramiento_canino
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. EL BACKEND (Symfony)
+  backend:
+    build: 
+      context: ./tfg_ank9_backend
+      dockerfile: Dockerfile
+    container_name: tfg-backend
+    volumes:
+      - ./tfg_ank9_backend:/var/www/symfony
+    ports:
+      - "8000:8000"
+    environment:
+      # En symfony el host de la DB ahora se llama db, como he puesto arriba
+      DATABASE_URL: "mysql://root:1234@db:3306/tfg_adiestramiento_canino?serverVersion=8.0.32&charset=utf8mb4"
+    depends_on:
+      - db
+
+  # 3. EL FRONTEND (React)
+  frontend:
+    build:
+      context: ./tfg_ank9_frontend
+      dockerfile: Dockerfile
+    container_name: tfg-frontend
+    volumes:
+      - ./tfg_ank9_frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:

@@ -17,7 +17,7 @@ export default function LogIn() {
     try {
       //la url login_check es donde enviamos las credenciales para que jwt nos de el token
       const response = await api.post('/login_check', {
-        username: email, // Symfony espera 'username' que en nuestro caso sera el correo
+        email: email.trim(), // Symfony espera 'username' que en nuestro caso sera el correo, pero lo he cambiado en el security yaml por email
         password: password
       });
 
@@ -45,7 +45,7 @@ export default function LogIn() {
 
     } catch (error) {
       console.error('Error en el login', error);
-      alert('Error al conectar con el backend');
+      alert("Error inesperado");
       setIsLoading(false);
     }
   }

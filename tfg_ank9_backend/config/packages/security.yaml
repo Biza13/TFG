@@ -1,5 +1,4 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
@@ -23,12 +22,15 @@ security:
             # switch_user: true
         #PARA EL JWT el login y el api
         login:
-            pattern: ^/api/login 
+            pattern: ^/api/login
             stateless: true 
+            provider: app_user_provider
             json_login: 
                 #Este path esta controlado por el firewall (seguridad) el jwt lo intercepta y si esta correcto con los datos de la bd devuelve el token
                 #Es el punto de entrada donde tenemos que enviar las credenciales para que Symfony nos de el Token
                 check_path: /api/login_check 
+                username_path: email
+                password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success 
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api: 
@@ -46,13 +48,14 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         # Permite ver la interfaz de la API y los contextos. Rutas abiertas
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/register-family, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register-user, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register-dog, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS }
         - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
         # PERMITIR REGISTRO (Crear usuario)
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
         #Esta siguiente linea es para hacer pruebas y poder ver los usuarios mediante url
-        #- { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [GET] }
         # Accesos publicos
         - { path: ^/api/services, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/galleries, roles: PUBLIC_ACCESS, methods: [GET] }
