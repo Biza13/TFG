@@ -71,8 +71,7 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          # Aquí es donde aplicaremos los archivos YAML de Kubernetes que crearemos luego
-          # kubectl apply -f k8s/    
+           kubectl apply -f EKS/    
 
 
 
