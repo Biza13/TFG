@@ -13,9 +13,8 @@ spec:
         app: tfg-frontend
     spec:
       containers:
-        - name: nginx-container
-          # Imagen que subiremos a ECR con los archivos de React dentro
-          image: TU_ID_CUENTA.dkr.ecr.REGION.amazonaws.com/tfg-frontend:latest
+        - name: react-container
+          image: bego13/tfg-frontend:latest
           ports:
             - containerPort: 80
 ---
@@ -30,4 +29,4 @@ spec:
     - protocol: TCP
       port: 80        # Puerto por el que entrarás desde el navegador
       targetPort: 80  # Puerto donde escucha tu Nginx
-  type: LoadBalancer  # <--- ESTO te da la URL pública en AWS
+  type: LoadBalancer  # Esta será la URL pública para entrar a tu web

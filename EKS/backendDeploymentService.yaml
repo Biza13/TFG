@@ -13,13 +13,18 @@ spec:
         app: tfg-backend
     spec:
       containers:
+        # Contenedor de php
         - name: php-container
-          image: TU_ID_CUENTA.dkr.ecr.REGION.amazonaws.com/tfg-backend:latest
-          ports:
-            - containerPort: 8000 # El que configuramos en el Dockerfile
+          image: bego13/tfg-php:latest
           env:
             - name: DATABASE_URL
-              value: "mysql://admin:password@TU_RDS_ENDPOINT:3306/tfg_db"
+              value: "mysql://admin:awsrdspassword@database-1.cpkysee28b5r.us-east-1.rds.amazonaws.com:3306/tfg_db?serverVersion=8.0.32&charset=utf8mb4"
+        
+        # Contenedor del servidor Nginx que sirve al Back
+        - name: nginx-back-container
+          image: bego13/tfg-nginx-back:latest
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -31,6 +36,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80         
-      targetPort: 8000 # Puerto donde escucha Symfony (el que pusimos en Docker)
+      targetPort: 80 # Puerto donde escucha Symfony (el que pusimos en Docker)
   #type: ClusterIP      # solo visible dentro del clúster, es decir solo el frontend podra acceder a el (back)
   type: LoadBalancer
