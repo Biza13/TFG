@@ -1,0 +1,81 @@
+name: deploy tfg
+
+#evento para que se deployee cuando se hace el push
+#on:
+#  push:   #evento a hacer en este caso cuando hagamos un push
+#    branches:   #en la rama main
+#      - main
+
+#Este evento es para que solo se deployee si se lo digo manualmente
+on:
+ workflow_dispatch:
+
+jobs:
+#job para desplegar infraestructura de terraform
+  push-to-dockerhub:   
+    runs-on: ubuntu-latest
+      
+    steps:   
+      - name: Checkout  
+        uses: actions/checkout@v6.0.2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: bego13
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 1. Construir y subir el BACKEND a dockerhub (PHP)
+      - name: Build and push PHP
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tfg_ank9_backend
+          file: ./tfg_ank9_backend/Dockerfile
+          push: true
+          tags: bego13/tfg-php:latest
+
+      # 2. Construir y subir el NGINX del BACKEND al dockerhub
+      - name: Build and push Nginx Back
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tfg_ank9_backend
+          file: ./tfg_ank9_backend/Dockerfile.ngx
+          push: true
+          tags: bego13/tfg-nginx-back:latest
+
+      # 3. Construir y subir el FRONTEND al dockerhub
+      - name: Build and push Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tfg_ank9_frontend  # el nombre de tu carpeta
+          push: true
+          tags: bego13/tfg-frontend:latest
+
+  deploy-to-eks:
+    needs: push-to-dockerhub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # Necesario en AWS Academy
+          aws-region: us-east-1
+
+      - name: Update Kubeconfig
+        run: aws eks update-kubeconfig --name tfg-cluster --region us-east-1
+
+      - name: Deploy to EKS
+        run: |
+           kubectl apply -f EKS/    
+
+
+
+
+
+
+          
