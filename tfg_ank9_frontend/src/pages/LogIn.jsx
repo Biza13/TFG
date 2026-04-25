@@ -45,7 +45,7 @@ export default function LogIn() {
 
     } catch (error) {
       console.error('Error en el login', error);
-      alert("Error inesperado");
+      alert("Usuario o contraseña erroneos");
       setIsLoading(false);
     }
   }

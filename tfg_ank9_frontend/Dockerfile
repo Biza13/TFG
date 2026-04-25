@@ -22,5 +22,5 @@ COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
-#Esto se llama multiStage y es que se construye en varias etapas, en mi caso, primero construyo con el build la pagina
+#Esto se llama multiStage y es que se construye en varias etapas, en mi caso, primero construyo con el build la pagina (carpeta dist)
 #después solo subo la pagina ya preparada para el despliegue, sin necesidad de subir cosas inecesarias que harian que la imagen pesase mucho más

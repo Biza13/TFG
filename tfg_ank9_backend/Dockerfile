@@ -32,6 +32,6 @@ EXPOSE 9000
 #CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
 
 # OPCIÓN B: KUBERNETES / PRODUCCIÓN (PHP-FPM)
-# Descomenta esta línea y comenta la de arriba cuando despliegues en AWS EKS.
+# Descomenta esta línea y comenta la de arriba cuando lo despliegue en AWS EKS.
 # Kubernetes usará un Ingress (Nginx) para comunicarse con este puerto 9000.
 CMD ["php-fpm"]
