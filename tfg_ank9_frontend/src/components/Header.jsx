@@ -5,8 +5,18 @@ import { NavLink } from 'react-router-dom';
 import useDeviceType from '../hooks/useDeviceType';
 import { useEffect, useState } from 'react'
 import ham from '../assets/img/ham.png'
+import AddButton from './AddButton';
 
 export default function Header({children}) {
+
+    /* Cogemos el rol para poner o no el boton de editar */
+    const roles = sessionStorage.getItem('role');
+
+    let isAdmin = false;
+
+    if (roles) {
+        isAdmin = roles.includes("ROLE_ADMIN")
+    }
 
     const { isMobile, isTablet, isDesktop } = useDeviceType();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -22,17 +32,17 @@ export default function Header({children}) {
     const API_BASE_URL = 'http://localhost:8000';
 
     const handleLogOut = () => {
-        localStorage.clear();
+        sessionStorage.clear();
         setIsLogged(false);
         window.location.href = '/';
     }
 
     useEffect (() => {
-        // Cada vez que cargue la página miramos el localStorage
-        const token = localStorage.getItem('token');
-        //const userEmail = localStorage.getItem('userEmail');
-        const userName = localStorage.getItem('userName')
-        const userPicture = localStorage.getItem('userPicture');
+        // Cada vez que cargue la página miramos el sessionStorage
+        const token = sessionStorage.getItem('token');
+        //const userEmail = sessionStorage.getItem('userEmail');
+        const userName = sessionStorage.getItem('userName')
+        const userPicture = sessionStorage.getItem('userPicture');
 
         if (token) {
             setIsLogged(true);
@@ -70,7 +80,7 @@ export default function Header({children}) {
                                         <div className='flex justify-center items-center gap-2'>
                                             <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
                                                 {
-                                                    fotoPerfil ? (
+                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                         <img 
                                                         src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
                                                         className="w-10 h-10 rounded-full object-cover" 
@@ -80,7 +90,6 @@ export default function Header({children}) {
                                                         <span className="text-2xl">👤</span> 
                                                     )
                                                 }
-                                                {/* <span className="text-2xl">👤</span>  */}
                                             </div>
                                         </div>
                                         
@@ -94,6 +103,7 @@ export default function Header({children}) {
                                             Cerrar sesión
                                         </button>
                                     </div>
+                                    <AddButton>Añadir servicio</AddButton>
                                 </div>
                 )
             }
@@ -161,7 +171,7 @@ export default function Header({children}) {
                                         <div className='flex justify-center items-center gap-2'>
                                             <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
                                                 {
-                                                    fotoPerfil ? (
+                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                         <img 
                                                         src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
                                                         className="w-10 h-10 rounded-full object-cover" 
@@ -171,7 +181,6 @@ export default function Header({children}) {
                                                         <span className="text-2xl">👤</span> 
                                                     )
                                                 }
-                                                {/* <span className="text-2xl">👤</span>  */}
                                             </div>
                                         </div>
                                         
@@ -197,8 +206,15 @@ export default function Header({children}) {
                     </div>
                     
                     {/* Children para textos */}
-                    <div className='flex flex-col items-center justify-center text-white text-center gap-5'>
-                        {children}
+                    <div className='flex items-center justify-center text-white text-center gap-5'> 
+                        {
+                            isAdmin && (
+                                <AddButton><p>Añadir servicio</p></AddButton>
+                            )
+                        }
+                        <div className="flex-1 text-center">
+                            {children}
+                        </div>
                     </div>
                 </div>
                 
@@ -278,8 +294,15 @@ export default function Header({children}) {
                     </div>
 
                     {/* Children para los textos */}
-                    <div className='flex flex-col items-center justify-center text-white text-center gap-5'> 
-                        {children}
+                    <div className='flex items-center justify-center text-white text-center gap-5'> 
+                        {
+                            isAdmin && (
+                                <AddButton><p>Añadir servicio</p></AddButton>
+                            )
+                        }
+                        <div className="flex-1 text-center">
+                            {children}
+                        </div>
                     </div>
                 </div>
                 

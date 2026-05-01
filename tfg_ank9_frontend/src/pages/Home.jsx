@@ -8,13 +8,36 @@ import iconShield from '../assets/img/iconShield1.png'
 import iconCup from '../assets/img/iconCup1.png'
 import iconPaw from '../assets/img/iconPaw1.png'
 import {animate, motion} from 'framer-motion'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+/* Siempre que se haga una llamada a la api hay que poner este import */
+import api from '../api/axios'
 
 export default function Home() {
 
-    const {isMobile, isTablet, isDesktop} = useDeviceType();
+  const {isMobile, isTablet, isDesktop} = useDeviceType();
 
-    const role = localStorage.getItem('role');
+  const role = sessionStorage.getItem('role');
+
+  const [services, setServices] = useState([]);
+
+  const fetchServices = async () => {
+
+    try{
+      const response = await api.get("/services");
+
+      const services = response.data.member;
+      console.log(response.data);
+
+      setServices(services);
+    }catch (error){
+      console.error('Error cargando servicios:', error);
+    }
+    
+  }
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
     if (isMobile){
         return (
@@ -256,7 +279,7 @@ export default function Home() {
 
                     <div className='w-full flex justify-between py-4'>
 
-                        <ServiceCard 
+                        {/* <ServiceCard 
                         title="Obediencia deportiva"
                         icon ={iconDog}
                         isHome={true}
@@ -290,7 +313,21 @@ export default function Home() {
                         eje={"x"}
                         mov={100}>
                             Entrenamiento para pruebas y competiciones
-                        </ServiceCard>
+                        </ServiceCard> */}
+
+                        {
+                          services.map((service) => (
+                            <ServiceCard
+                            key = {service.id}
+                            title = {service.name}
+                            /* Aqui habra quq cambiarlo por la url cuando este desplegado */
+                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            isHome = {true}
+                            >
+                              {service.shortDescription}
+                            </ServiceCard>
+                          ))
+                        }
 
                     </div>
 

@@ -27,15 +27,15 @@ export default function LogIn() {
       const userName = response.data.name;
       const userRole = response.data.role;
 
-      // Y lo guardamos en el localStorage
-      localStorage.setItem('token', token);
-      // Guardo tambien el email en el localStorage para mostrarlo pero no lo cojo de la bd sino del formulario
-      localStorage.setItem('userEmail', email);
+      // Y lo guardamos en el sessionStorage
+      sessionStorage.setItem('token', token);
+      // Guardo tambien el email en el sessionStorage para mostrarlo pero no lo cojo de la bd sino del formulario
+      sessionStorage.setItem('userEmail', email);
       // Guardamos la foto y el noombre el cual si que sacamos de la bd
-      localStorage.setItem('userPicture', userPicture);
-      localStorage.setItem('userName', userName);
+      sessionStorage.setItem('userPicture', userPicture);
+      sessionStorage.setItem('userName', userName);
       // Guardar el rol
-      localStorage.setItem('role', userRole);
+      sessionStorage.setItem('role', userRole);
 
       //Cuando haces login, symfony te devuelve un json con una sola clave (el token).
       //alert('Login correcto.');

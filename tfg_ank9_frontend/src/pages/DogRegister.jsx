@@ -28,7 +28,7 @@ export default function Register() {
 
     try {
       // Recuperamos el token que guardamos en el registro del usuario
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
 
       // Enviar la petición con el token en el header para poder registrar al perro y que symfony sepa quien es el dueño al registrarlo
       const response = await api.post('/register-dog', formData, {

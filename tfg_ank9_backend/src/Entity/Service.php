@@ -13,10 +13,15 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
+// Uses para la parte de las subidas de las fotos de usuarios
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 //Para la api platform
 #[ApiResource]
+// Para el vich (las imagenes)
+#[Vich\Uploadable]
 class Service
 {
     #[ORM\Id]
@@ -47,6 +52,13 @@ class Service
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $titleFeatures2 = null;
+
+    // Campos para las imagenes
+    #[Vich\UploadableField(mapping: 'services_images', fileNameProperty: 'icon_route')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -147,5 +159,20 @@ class Service
         $this->titleFeatures2 = $titleFeatures2;
 
         return $this;
+    }
+
+    // Para las imagenes
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+
+        if ($imageFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 }
