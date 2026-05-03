@@ -9,15 +9,6 @@ import AddButton from './AddButton';
 
 export default function Header({children}) {
 
-    /* Cogemos el rol para poner o no el boton de editar */
-    const roles = sessionStorage.getItem('role');
-
-    let isAdmin = false;
-
-    if (roles) {
-        isAdmin = roles.includes("ROLE_ADMIN")
-    }
-
     const { isMobile, isTablet, isDesktop } = useDeviceType();
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -103,7 +94,6 @@ export default function Header({children}) {
                                             Cerrar sesión
                                         </button>
                                     </div>
-                                    <AddButton>Añadir servicio</AddButton>
                                 </div>
                 )
             }
@@ -207,14 +197,11 @@ export default function Header({children}) {
                     
                     {/* Children para textos */}
                     <div className='flex items-center justify-center text-white text-center gap-5'> 
-                        {
-                            isAdmin && (
-                                <AddButton><p>Añadir servicio</p></AddButton>
-                            )
-                        }
+                        
                         <div className="flex-1 text-center">
                             {children}
                         </div>
+                    
                     </div>
                 </div>
                 
@@ -295,14 +282,11 @@ export default function Header({children}) {
 
                     {/* Children para los textos */}
                     <div className='flex items-center justify-center text-white text-center gap-5'> 
-                        {
-                            isAdmin && (
-                                <AddButton><p>Añadir servicio</p></AddButton>
-                            )
-                        }
+
                         <div className="flex-1 text-center">
                             {children}
                         </div>
+
                     </div>
                 </div>
                 

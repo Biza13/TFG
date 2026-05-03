@@ -81,40 +81,21 @@ export default function Home() {
                     <p className='font-bold text-3xl'>Nuestros Servicios</p>
 
                     <div className='w-full flex flex-col gap-5 py-4'>
-                        <ServiceCard
-                        title="Obediencia deportiva"
-                        icon ={iconDog}
-                        isHome={true}
-                        eje={"x"}
-                        mov={-100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-                        <ServiceCard 
-                        title="IGP & Mondioring"
-                        icon ={iconShield}
-                        isHome={true}
-                        eje={"x"}
-                        mov={100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
 
-                        <ServiceCard 
-                        title="Modificación de conducta"
-                        icon ={iconPaw}
-                        isHome={true}
-                        eje={"x"}
-                        mov={-100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="Preparación de pruebas"
-                        icon ={iconCup}
-                        isHome={true}
-                        eje={"x"}
-                        mov={100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
+                        {
+                          services.map((service) => (
+                            <ServiceCard
+                            key = {service.id}
+                            title = {service.name}
+                            /* Aqui habra quq cambiarlo por la url cuando este desplegado */
+                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            isHome = {true}
+                            >
+                              {service.shortDescription}
+                            </ServiceCard>
+                          ))
+                        }
+                        
                     </div>
 
                 </div>
@@ -179,40 +160,19 @@ export default function Home() {
                     <p className='font-bold text-5xl mb-3'>Nuestros Servicios</p>
 
                     <div className='w-full flex flex-wrap gap-5 py-4 justify-center'>
-                        <ServiceCard
-                        title="Obediencia deportiva"
-                        icon ={iconDog}
-                        isHome={true}
-                        eje={"x"}
-                        mov={-100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-                        <ServiceCard 
-                        title="IGP & Mondioring"
-                        icon ={iconShield}
-                        isHome={true}
-                        eje={"y"}
-                        mov={100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="Modificación de conducta"
-                        icon ={iconPaw}
-                        isHome={true}
-                        eje={"y"}
-                        mov={100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="Preparación de pruebas"
-                        icon ={iconCup}
-                        isHome={true}
-                        eje={"x"}
-                        mov={100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
+                        {
+                          services.map((service) => (
+                            <ServiceCard
+                            key = {service.id}
+                            title = {service.name}
+                            /* Aqui habra quq cambiarlo por la url cuando este desplegado */
+                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            isHome = {true}
+                            >
+                              {service.shortDescription}
+                            </ServiceCard>
+                          ))
+                        }
                     </div>
 
                 </div>
@@ -278,42 +238,6 @@ export default function Home() {
                     <p className='font-bold text-5xl mb-4 text-[#21283a]'>Nuestros Servicios</p>
 
                     <div className='w-full flex justify-between py-4'>
-
-                        {/* <ServiceCard 
-                        title="Obediencia deportiva"
-                        icon ={iconDog}
-                        isHome={true}
-                        eje={"x"}
-                        mov={-100}>
-                            Entrenamiento en obediencia avanzada
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="IGP & Mondioring"
-                        icon ={iconShield}
-                        isHome={true}
-                        eje={"y"}
-                        mov={100}>
-                            Preparación para deportes de protección
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="Modificación de conducta"
-                        icon ={iconPaw}
-                        isHome={true}
-                        eje={"y"}
-                        mov={100}>
-                            Solución de problemas de comportamiento
-                        </ServiceCard>
-
-                        <ServiceCard 
-                        title="Preparación de pruebas"
-                        icon ={iconCup}
-                        isHome={true}
-                        eje={"x"}
-                        mov={100}>
-                            Entrenamiento para pruebas y competiciones
-                        </ServiceCard> */}
 
                         {
                           services.map((service) => (
