@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 //para el carousel
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
+import api from '../api/axios';
+import VideoCard from "./VideoCard";
 
 //Si me da tiempo lo hare escalable con un array que se pueda recorrer y mostrar tantos videos como tenga el array
 export default function Carousel() {
@@ -10,8 +12,7 @@ export default function Carousel() {
     emblaRef se lo pondremos al div que va a ser el carousel (el que se va a mover)
     y el emblaApi tiene las funciones para mover el carousel (los botones)
     el loop: true es para que cuando llegue a la ultima tarjeta se vuelva a la primera y el autoplay es para que se mueva solo */
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
-    const cardStyle = "w-full md:w-[55%] lg:w-[60%] shrink-0 bg-[#21283a] h-60 md:h-70 lg:h-100 rounded-2xl flex items-center justify-center inset-shadow-sm inset-shadow-gray-500/50";
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false }, [Autoplay()]);
 
     /* Función para ir hacia atrás */
     const backwards = () => {
@@ -23,28 +24,40 @@ export default function Carousel() {
         if (emblaApi) emblaApi.scrollNext()
     }
 
+    /* Para coger los videos */
+    const [videos, setVideos] = useState([]);
+
+    const fetchVideos = async () => {
+      try{
+        const response = await api.get("/galleries");
+
+        // Los videos y las fotos estan en response.data.member
+        const elements = response.data.member;
+
+        const onlyVideos = elements.filter(item => item.type === 'video');
+            setVideos(onlyVideos);
+
+      }catch (error) {
+        console.error("Error cargando la galeria ", error);
+      }
+    }
+
+    useEffect(() => {
+      fetchVideos();
+    }, []);
+
   return (
     <>
-      <div className="w-[90%] overflow-hidden m-auto rounded-2xl p-5 shadow-sm shadow-white my-5"ref={emblaRef}>
+      <div className="w-[95%] md:w-[90%] lg:w-[85%] overflow-hidden m-auto rounded-2xl p-3 md:p-5 shadow-sm shadow-white my-5" ref={emblaRef}>
 
         {/* Div de las imgs o videos */}
-        <div className="flex w-full gap-5 pl-4">
+        <div className="flex w-full gap-5">
 
-          <div className={cardStyle}>
-            Tarjeta 1
-          </div>
-
-          <div className={cardStyle}>
-            Tarjeta 2
-          </div>
-
-          <div className={cardStyle}>
-            Tarjeta 3
-          </div>
-
-          <div className={cardStyle}>
-            Tarjeta 4
-          </div>
+          {
+            videos.map( (video, index) =>(
+              <VideoCard key={index} video={video}></VideoCard>
+             ) )
+          }
 
         </div>
 

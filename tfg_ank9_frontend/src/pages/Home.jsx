@@ -237,7 +237,7 @@ export default function Home() {
 
                     <p className='font-bold text-5xl mb-4 text-[#21283a]'>Nuestros Servicios</p>
 
-                    <div className='w-full flex justify-between py-4'>
+                    <div className='w-full grid grid-cols-4 align-baseline py-4 gap-6 m-auto'>
 
                         {
                           services.map((service) => (

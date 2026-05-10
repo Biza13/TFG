@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 //uses para la api platform
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetColection;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
@@ -54,15 +54,9 @@ class Dog
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /**
-     * @var Collection<int, Gallery>
-     */
-    #[ORM\OneToMany(targetEntity: Gallery::class, mappedBy: 'dog')]
-    private Collection $galleries;
-
     public function __construct()
     {
-        $this->galleries = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -114,36 +108,6 @@ class Dog
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Gallery>
-     */
-    public function getGalleries(): Collection
-    {
-        return $this->galleries;
-    }
-
-    public function addGallery(Gallery $gallery): static
-    {
-        if (!$this->galleries->contains($gallery)) {
-            $this->galleries->add($gallery);
-            $gallery->setDog($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGallery(Gallery $gallery): static
-    {
-        if ($this->galleries->removeElement($gallery)) {
-            // set the owning side to null (unless already changed)
-            if ($gallery->getDog() === $this) {
-                $gallery->setDog(null);
-            }
-        }
 
         return $this;
     }

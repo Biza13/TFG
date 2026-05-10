@@ -4,11 +4,13 @@ nelmio_cors:
         allow_origin: ['http://localhost:5173'] # La URL de tu React
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
+        allow_credentials: true
         expose_headers: ['Link']
         max_age: 3600
     paths:
         '^/api/':
             allow_origin: ['http://localhost:5173']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
-            allow_headers: ['content-type', 'authorization']
+            allow_headers: ['content-type', 'Authorization']
+            allow_credentials: true
             max_age: 3600

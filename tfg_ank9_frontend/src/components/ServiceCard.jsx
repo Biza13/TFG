@@ -3,10 +3,10 @@ import EditButton from './EditButton';
 import { useState } from 'react';
 import DeleteButton from './DeleteButton';
 
-export default function ServiceCard({ title, icon, isHome, children, featureTitle, featureTitle2 = "", features, features2 = "", eje, mov, showEditButton = false, edit, service }) {
+export default function ServiceCard({ title, icon, isHome, children, featureTitle, featureTitle2 = "", features, features2 = "", eje, mov, showEditButton = false, edit, service, deleteS }) {
 
   const classBox = isHome 
-                        ? "relative ring-gray-600 rounded-2xl w-full md:w-[40%] lg:w-[24%] flex flex-col items-center bg-gray-300 py-3 gap-3 shadow-2xl" 
+                        ? "relative ring-gray-600 rounded-2xl w-full md:w-[40%] lg:w-full flex flex-col items-center bg-gray-300 py-3 gap-3 shadow-2xl" 
                         : "relative ring-gray-600 rounded-2xl w-full md:w-[45%] lg:w-[40%] flex flex-col items-center gap-3 bg-[#21283a] py-3 inset-shadow-sm inset-shadow-gray-500/50 ring-1 ring-white/10" ; 
 
   const classIcon = isHome
@@ -49,7 +49,7 @@ export default function ServiceCard({ title, icon, isHome, children, featureTitl
         showEditButton && isAdmin && (
           <div className='w-9 flex'>
             <EditButton onClick={() => edit(service)}></EditButton>
-            <DeleteButton></DeleteButton>
+            <DeleteButton onClick={() => deleteS(service)}></DeleteButton>
           </div>
         )
       }

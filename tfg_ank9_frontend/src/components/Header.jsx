@@ -134,7 +134,7 @@ export default function Header({children}) {
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                <div className='w-full flex-col'>
+                <div className='w-full flex flex-col'>
 
                     {/* Barra links */}
                     <div className='bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
@@ -196,9 +196,9 @@ export default function Header({children}) {
                     </div>
                     
                     {/* Children para textos */}
-                    <div className='flex items-center justify-center text-white text-center gap-5'> 
+                    <div className='w-full flex items-center justify-center text-white text-center gap-5'> 
                         
-                        <div className="flex-1 text-center">
+                        <div className="w-full flex text-center justify-center">
                             {children}
                         </div>
                     
@@ -281,9 +281,9 @@ export default function Header({children}) {
                     </div>
 
                     {/* Children para los textos */}
-                    <div className='flex items-center justify-center text-white text-center gap-5'> 
+                    <div className='flex items-center justify-center text-white text-center gap-5 mt-6'> 
 
-                        <div className="flex-1 text-center">
+                        <div className="flex text-center">
                             {children}
                         </div>
 

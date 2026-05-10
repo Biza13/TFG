@@ -7,15 +7,29 @@ use Doctrine\ORM\Mapping as ORM;
 //uses para la api platform
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetColection;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GalleryRepository::class)]
 //Para la api platform
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(
+            // ESTO es lo que soluciona el error 415
+            inputFormats: ['multipart' => ['multipart/form-data']]
+        ),
+    ]
+)]
+#[Vich\Uploadable]
 class Gallery
 {
     #[ORM\Id]
@@ -26,15 +40,17 @@ class Gallery
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $text = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $imgvideo_route = null;
 
     #[ORM\Column(length: 20)]
     private ?string $type = 'image';
 
-    #[ORM\ManyToOne(inversedBy: 'galleries')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Dog $dog = null;
+    #[Vich\UploadableField(mapping: 'gallery_images', fileNameProperty: 'imgvideo_route')]
+    private ?File $imageFile = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -58,7 +74,7 @@ class Gallery
         return $this->imgvideo_route;
     }
 
-    public function setImgvideoRoute(string $imgvideo_route): static
+    public function setImgvideoRoute(?string $imgvideo_route): static
     {
         $this->imgvideo_route = $imgvideo_route;
 
@@ -77,14 +93,28 @@ class Gallery
         return $this;
     }
 
-    public function getDog(): ?Dog
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->dog;
+        $this->imageFile = $imageFile;
+
+        if ($imageFile) {
+            $this->updatedAt = new \DateTime();
+        }
     }
 
-    public function setDog(?Dog $dog): static
+    public function getImageFile(): ?File
     {
-        $this->dog = $dog;
+        return $this->imageFile;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
