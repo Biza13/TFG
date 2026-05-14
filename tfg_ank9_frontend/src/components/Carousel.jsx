@@ -6,7 +6,7 @@ import api from '../api/axios';
 import VideoCard from "./VideoCard";
 
 //Si me da tiempo lo hare escalable con un array que se pueda recorrer y mostrar tantos videos como tenga el array
-export default function Carousel() {
+export default function Carousel({isAdmin, handleDelete}) {
 
     /* Este es el hook de embla
     emblaRef se lo pondremos al div que va a ser el carousel (el que se va a mover)
@@ -54,8 +54,13 @@ export default function Carousel() {
         <div className="flex w-full gap-5">
 
           {
-            videos.map( (video, index) =>(
-              <VideoCard key={index} video={video}></VideoCard>
+            videos.map( (video) =>(
+              <VideoCard 
+                key={video.id} 
+                video={video} 
+                isAdmin={isAdmin} 
+                handleDelete={() => handleDelete(video.id)}>
+              </VideoCard>
              ) )
           }
 

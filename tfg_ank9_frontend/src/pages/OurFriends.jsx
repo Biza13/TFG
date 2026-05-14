@@ -105,6 +105,32 @@ export default function OurFriends() {
 
   }
 
+  const handleDelete = async (id) => {
+
+    /* Pantalla como el alert pero con el aceptar o cancelar para corroborar si quiere eliminar */
+    if (!window.confirm("¿Estás seguro de que quieres eliminar esta imagen o video?")) {
+        return;
+    }
+
+    try {
+      const token = sessionStorage.getItem("token");
+
+      await api.delete(`/galleries/${id}`, {
+        headers: {
+                'Authorization': `Bearer ${token}`
+            }
+      });
+
+        alert("Imagen o video eliminada con éxito");
+        window.location.reload();
+
+    } catch (error) {
+      console.error("Error al borrar:", error);
+      alert("No se pudo eliminar la imagen o el video");
+    }
+
+  }
+
   /* Para mobil, tablet y escritorio */
   return(
     <div className='bg-[#1c2230]'>
@@ -134,7 +160,7 @@ export default function OurFriends() {
 
         {
             isAdmin && (                
-                <div className="w-[80%] md:w-[20%] bg-[#21283a] p-6 rounded-2xl border border-white/10 my-8 flex flex-col m-auto items-center justify-center">
+                <div className="w-[80%] md:w-[35%] bg-[#21283a] p-6 rounded-2xl border border-white/10 my-8 flex flex-col m-auto items-center justify-center">
 
                   <label className="block text-white text-sm font-medium mb-2">
                     Añadir nuevo contenido a la galería
@@ -206,11 +232,16 @@ export default function OurFriends() {
           }
         
         {/* Carousel */}
-        <Carousel></Carousel>
+        <Carousel isAdmin={isAdmin} handleDelete={handleDelete}></Carousel>
 
         <div className='w-[90%] m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center my-5 mt-8'>
           {imgGallery.map((item, index) => {
-            return <ImgCard img={item} imgSelected={() => setSelectedImg(`http://localhost:8000/uploads/gallery/${item.imgvideo_route}`)}></ImgCard>
+            return <ImgCard 
+                      img={item} 
+                      imgSelected={() => setSelectedImg(`http://localhost:8000/uploads/gallery/${item.imgvideo_route}`)}
+                      handleDelete={() => handleDelete(item.id)}  
+                      isAdmin={isAdmin}
+                    ></ImgCard>
           })}
         </div>
 

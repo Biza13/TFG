@@ -20,6 +20,12 @@ export default function Home() {
 
   const [services, setServices] = useState([]);
 
+  let isAdmin = false;
+
+  if (role) {
+      isAdmin = role.includes("ROLE_ADMIN")
+  }
+
   const fetchServices = async () => {
 
     try{
@@ -115,7 +121,7 @@ export default function Home() {
 
                 {/* Cabecera Imagen */}
                 {/* Espero que no haya problema con el mt negativo en el chrome se ve bien */}
-                <div className='bg-cover bg-top-left -mt-35 bg-no-repeat bg-[`url(${img})`]' style={{backgroundImage: `url(${img})`}}>
+                <div className='bg-cover bg-top-left -mt-44 bg-no-repeat bg-[`url(${img})`]' style={{backgroundImage: `url(${img})`}}>
 
                     <div className="bg-gradient-to-r from-black/80 via-black/40 to-transparent pt-35">
                         

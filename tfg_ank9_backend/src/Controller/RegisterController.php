@@ -129,23 +129,4 @@ class RegisterController extends AbstractController{
 
         return new JsonResponse(['status' => 'Usuario y datos eliminados correctamente!'], 200);
     }
-
-    // Metodo temporal para comprobar el hasher
-    /* #[Route('/api/test-password', name: 'test_password')]
-    public function testPassword(UserPasswordHasherInterface $hasher): Response
-    {
-        $user = new User();
-        $passwordQueYoEscribo = "123456"; // Pon aquí lo que escribes en el input
-        
-        // El hash que ves en el JSON de la API para Pepito (CÓPIALO TAL CUAL)
-        $hashDeLaBD = '$2y$13$f5.C7cLw083jnN05iqciDOag3Gc4e3OsMAZFPxP1peYxDhban5v7i'; 
-
-        $esValida = $hasher->isPasswordValid($user, $passwordQueYoEscribo, $hashDeLaBD);
-
-        return new JsonResponse([
-            'coincide' => $esValida,
-            'algoritmo_esperado' => 'bcrypt/auto',
-            'hash_en_bd' => $hashDeLaBD
-        ]);
-    } */
 }

@@ -22,10 +22,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(),
-        new Get(),
         new Post(
-            // ESTO es lo que soluciona el error 415
-            inputFormats: ['multipart' => ['multipart/form-data']]
+            security: "is_granted('ROLE_ADMIN')",
+            inputFormats: ['multipart' => ['multipart/form-data']],
+            controller: \App\Controller\CreateGalleryAction::class,
+            deserialize: false,
+            output: false
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')" // Solo el admin puede borrar
         ),
     ]
 )]

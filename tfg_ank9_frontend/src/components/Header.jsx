@@ -22,6 +22,14 @@ export default function Header({children}) {
     // Esto es para poner la foto de perfil
     const API_BASE_URL = 'http://localhost:8000';
 
+    const role = sessionStorage.getItem('role');
+
+    let isAdmin = false;
+
+    if (role) {
+      isAdmin = role.includes("ROLE_ADMIN")
+    }
+
     const handleLogOut = () => {
         sessionStorage.clear();
         setIsLogged(false);
@@ -44,8 +52,8 @@ export default function Header({children}) {
     }, [])
 
     //Estilos para que se quede subrayado la página en la que estás.
-    const onStyle = 'transition-transform duration-500 active:scale-125 border-b-3';
-    const offStyle = 'transition-transform duration-500 active:scale-125 lg:hover:scale-125';
+    const onStyle = 'transition-transform duration-500 active:scale-125 border-b-3 text-sm';
+    const offStyle = 'transition-transform duration-500 active:scale-125 lg:hover:scale-125 text-sm';
 
     //Para movil
     if (isMobile) {
@@ -65,36 +73,36 @@ export default function Header({children}) {
 
             {
                 isLogged && (
-                    <div className='flex justify-center gap-5 items-center'>
-                                    <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center w-fit shadow-xl">
-                                        {/* Foto de usuario (de momento una genérica o la que guardes) */}
-                                        <div className='flex justify-center items-center gap-2'>
-                                            <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
-                                                {
-                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
-                                                        <img 
-                                                        src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
-                                                        className="w-10 h-10 rounded-full object-cover" 
-                                                        alt="Avatar"
-                                                        />
-                                                    ) : (
-                                                        <span className="text-2xl">👤</span> 
-                                                    )
-                                                }
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <h2 className="text-sm font-bold text-[#1c2230]">Bienvenid@</h2>
-                                            <p className="text-[#21283a] text-sm text italic">{name}</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button onClick={handleLogOut} className='border border-white text-sm px-3 py-2 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>
-                                            Cerrar sesión
-                                        </button>
+                        <div className='flex gap-5 justify-center mb-3'>
+                            <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center w-fit shadow-xl self-center">
+                                {/* Foto de usuario (de momento una genérica o la que guardes) */}
+                                <div className='flex justify-center items-center gap-2'>
+                                    <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
+                                        {
+                                            fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
+                                                <img 
+                                                src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                className="w-10 h-10 rounded-full object-cover" 
+                                                alt="Avatar"
+                                                />
+                                            ) : (
+                                                <span className="text-2xl">👤</span> 
+                                            )
+                                        }
                                     </div>
                                 </div>
+                                
+                                <div>
+                                    <h2 className="text-sm font-bold text-[#1c2230]">Bienvenid@</h2>
+                                    <p className="text-[#21283a] text-sm text italic">{name}</p>
+                                </div>
+                            </div>
+                            <div className='flex gap-2 '>
+                                <button onClick={handleLogOut} className='border border-white text-sm px-3 py-2 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>
+                                    Cerrar sesión
+                                </button>
+                            </div>
+                        </div>
                 )
             }
 
@@ -102,20 +110,19 @@ export default function Header({children}) {
             {menuOpen && (
             <div className="flex flex-col gap-5 mt-5 pb-5 font-bold border-t border-gray-700 pt-5 items-center">
                 
-                <Link to='/'>Inicio</Link>
-                <Link to='/services'>Servicios</Link>
-                <Link to='/ourFriends'>Nuestros amigos</Link>
-                <div>
-                    <Link to='/dogRegister'>Registrar perro</Link>
-                </div>
+                <NavLink to='/' className={ ({isActive}) => isActive? "hidden" : "" }>Inicio</NavLink>
+                <NavLink to='/services' className={ ({isActive}) => isActive? "hidden" : "" }>Servicios</NavLink>
+                <NavLink to='/ourFriends' className={ ({isActive}) => isActive? "hidden" : "" }>Nuestros amigos</NavLink>
+                <NavLink to='/dogRegister' className={ ({isActive}) => isActive? "hidden" : "" }>Registrar perro</NavLink>
                 {
                     !isLogged && (
                         <div className='flex flex-col justify-center items-center gap-5'>
-                            <Link to='/register'>Registro</Link>
-                            <Link to='/login' className="bg-white text-[#21283a] w-full text-center px-2 py-2 rounded-lg">Iniciar sesión</Link>
+                            <NavLink to='/register' className={ ({isActive}) => isActive? "hidden" : "" }>Registro</NavLink>
+                            <NavLink to='/login'  className={ ({isActive}) => isActive? "hidden" : "bg-white text-[#21283a] w-full text-center px-2 py-2 rounded-lg" }>Iniciar sesión</NavLink>
                         </div>
                     )
                 }
+                <NavLink to='/admin' className={ ({isActive}) => isActive ? "hidden" : "" }>Administración</NavLink>
                 
             </div>
             
@@ -130,69 +137,80 @@ export default function Header({children}) {
             <div className='w-full flex'>
 
                 {/* Logo */}
-                <div className='w-[25%] bg-[#21283a] rounded-br-[15px] p-5'>
+                <div className='w-[25%] bg-[#21283a] rounded-br-[15px] p-5 shrink-0'>
                     <img src={Logo} alt="Logo" />
                 </div>
 
-                <div className='w-full flex flex-col'>
+                <div className='w-full flex flex-col min-w-0'>
 
                     {/* Barra links */}
-                    <div className='bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
-                        <div className='flex gap-10'>
-                            {/* Usamos navLink porque sabe el que página estamos, en vez de Link que No lo sabe
-                            y el navLink tiene una propiedad que es el isActive que devuelve true si estás en la página o false si no estas en la pagina */}
-                            <NavLink to='/' className={ ({isActive}) => isActive ? onStyle : offStyle }>Inicio</NavLink>
-                            <NavLink to='/services' className={ ({isActive}) => isActive ? onStyle : offStyle }>Servicios</NavLink>
-                            <NavLink to='/ourFriends' className={ ({isActive}) => isActive ? onStyle : offStyle }>Nuestros amigos</NavLink>
-
+                    <div className='bg-[#21283a] flex flex-col'>
+                        <div className='bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
+                            <div className='flex gap-10'>
+                                {/* Usamos navLink porque sabe el que página estamos, en vez de Link que No lo sabe
+                                y el navLink tiene una propiedad que es el isActive que devuelve true si estás en la página o false si no estas en la pagina */}
+                                <NavLink to='/' className={ ({isActive}) => isActive ? onStyle : offStyle }>Inicio</NavLink>
+                                <NavLink to='/services' className={ ({isActive}) => isActive ? onStyle : offStyle }>Servicios</NavLink>
+                                <NavLink to='/ourFriends' className={ ({isActive}) => isActive ? onStyle : offStyle }>Nuestros amigos</NavLink>
+                        
+                                {
+                                    isLogged && (
+                                        <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                    )
+                                }
+                        
+                            </div>
+                        
                             {
-                                isLogged && (
-                                    <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
-                                )
-                            }
-
-                        </div>
-
-                        {
-                            isLogged ? (
-                                <div className='flex justify-center gap-5 items-center'>
-                                    <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center shadow-xl">
-                                        {/* Foto de usuario (de momento una genérica o la que guardes) */}
-                                        <div className='flex justify-center items-center gap-2'>
-                                            <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
-                                                {
-                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
-                                                        <img 
-                                                        src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
-                                                        className="w-10 h-10 rounded-full object-cover" 
-                                                        alt="Avatar"
-                                                        />
-                                                    ) : (
-                                                        <span className="text-2xl">👤</span> 
-                                                    )
-                                                }
+                                isLogged ? (
+                                    <div className='flex justify-center gap-5 items-center'>
+                                        <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center shadow-xl shrink-0">
+                                            {/* Foto de usuario (de momento una genérica o la que guardes) */}
+                                            <div className='flex justify-center items-center gap-2'>
+                                                <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
+                                                    {
+                                                        fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
+                                                            <img 
+                                                            src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                            className="w-10 h-10 rounded-full object-cover" 
+                                                            alt="Avatar"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-2xl">👤</span> 
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <h2 className="font-bold text-[#1c2230]">Bienvenid@</h2>
+                                                <p className="text-[#21283a] text-sm text italic">{name}</p>
                                             </div>
                                         </div>
-                                        
                                         <div>
-                                            <h2 className="font-bold text-[#1c2230]">Bienvenid@</h2>
-                                            <p className="text-[#21283a] text-sm text italic">{name}</p>
+                                            <button onClick={handleLogOut} className='font-light border border-white px-3 py-2 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all text-sm'>
+                                                Cerrar sesión
+                                            </button>
+                                            
                                         </div>
                                     </div>
-                                    <div>
-                                        <button onClick={handleLogOut} className='border border-white px-3 py-2 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>
-                                            Cerrar sesión
-                                        </button>
+                                ) : (
+                                    <div className='flex gap-10 items-center'>
+                                        <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>Iniciar sesión</NavLink>
+                                        <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
                                     </div>
-                                </div>
-                            ) : (
-                                <div className='flex gap-10 items-center'>
-                                    <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>Iniciar sesión</NavLink>
-                                    <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
-                                </div>
-                            )
-                        }
-
+                                )
+                            }
+                    </div>
+                        <div className='self-center mb-2'>
+                            {
+                                isAdmin && (
+                                    <NavLink to='/admin' className={ ({isActive}) => isActive ? "hidden" : 'inline-block text-white border rounded py-1 px-2 hover:scale-110 hover:font-bold transition-all duration-300' }>
+                                        Administración
+                                    </NavLink>
+                                )
+                            }
+                        </div>
                     </div>
                     
                     {/* Children para textos */}
@@ -222,62 +240,73 @@ export default function Header({children}) {
                 <div className='w-full flex-col'>
 
                     {/* Barra de links */}
-                    <div className='w-full bg-[#21283a] h-25 text-white font-bold flex justify-evenly items-center'>
-                        <div className='flex gap-10'>
-                            {/* Usamos navLink porque sabe el que página estamos, en vez de Link que No lo sabe
-                            y el navLink tiene una propiedad que es el isActive que devuelve true si estás en la página o false si no estas en la pagina */}
-                            <NavLink to='/' className={ ({isActive}) => isActive ? onStyle : offStyle }>Inicio</NavLink>
-                            <NavLink to='/services' className={ ({isActive}) => isActive ? onStyle : offStyle }>Servicios</NavLink>
-                            <NavLink to='/ourFriends' className={ ({isActive}) => isActive ? onStyle : offStyle }>Nuestros amigos</NavLink>
-
+                    <div className='bg-[#21283a] flex flex-col'>
+                        <div className='w-full bg-[#21283a] h-25 text-white font-bold flex justify-evenly items-center'>
+                            <div className='flex gap-10'>
+                                {/* Usamos navLink porque sabe el que página estamos, en vez de Link que No lo sabe
+                                y el navLink tiene una propiedad que es el isActive que devuelve true si estás en la página o false si no estas en la pagina */}
+                                <NavLink to='/' className={ ({isActive}) => isActive ? onStyle : offStyle }>Inicio</NavLink>
+                                <NavLink to='/services' className={ ({isActive}) => isActive ? onStyle : offStyle }>Servicios</NavLink>
+                                <NavLink to='/ourFriends' className={ ({isActive}) => isActive ? onStyle : offStyle }>Nuestros amigos</NavLink>
+                        
+                                {
+                                    isLogged && (
+                                        <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                    )
+                                }
+                        
+                            </div>
+                        
                             {
-                                isLogged && (
-                                    <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
-                                )
-                            }
-
-                        </div>
-
-                        {
-                            isLogged ? (
-                                <div className='flex justify-center gap-5 items-center'>
-                                    <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center shadow-xl">
-                                        {/* Foto de usuario (de momento una genérica o la que guardes) */}
-                                        <div className='flex justify-center items-center gap-2'>
-                                            <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
-                                                {
-                                                    fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
-                                                        <img 
-                                                        src={`http://localhost:8000/uploads/users/${fotoPerfil}`} 
-                                                        className="w-10 h-10 rounded-full object-cover" 
-                                                        alt="Avatar"
-                                                        />
-                                                    ) : (
-                                                        <span className="text-2xl">👤</span> 
-                                                    )
-                                                }
+                                isLogged ? (
+                                    <div className='flex justify-center gap-5 items-center'>
+                                        <div className="bg-[#8a8a8a] p-2 rounded-lg flex gap-2 items-center shadow-xl">
+                                            {/* Foto de usuario (de momento una genérica o la que guardes) */}
+                                            <div className='flex justify-center items-center gap-2'>
+                                                <div className="bg-[#21283a] rounded-full flex items-center justify-center overflow-hidden border-2 border-[#21283a]">
+                                                    {
+                                                        fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
+                                                            <img 
+                                                            src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                            className="w-10 h-10 rounded-full object-cover" 
+                                                            alt="Avatar"
+                                                            />
+                                                        ) : (
+                                                            <span className="text-2xl">👤</span> 
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <h2 className="font-bold text-[#1c2230]">Bienvenid@</h2>
+                                                <p className="text-[#21283a] text-sm text italic">{name}</p>
                                             </div>
                                         </div>
-                                        
                                         <div>
-                                            <h2 className="font-bold text-[#1c2230]">Bienvenid@</h2>
-                                            <p className="text-[#21283a] text-sm text italic">{name}</p>
+                                            <button onClick={handleLogOut} className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>
+                                                Cerrar sesión
+                                            </button>
                                         </div>
                                     </div>
-                                    <div>
-                                        <button onClick={handleLogOut} className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>
-                                            Cerrar sesión
-                                        </button>
+                                ) : (
+                                    <div className='flex gap-10 items-center'>
+                                        <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>Iniciar sesión</NavLink>
+                                        <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
                                     </div>
-                                </div>
-                            ) : (
-                                <div className='flex gap-10 items-center'>
-                                    <NavLink to='/login' className='border border-white px-5 py-3 rounded-lg hover:bg-white hover:text-[#21283a] hover:scale-105 active:bg-white active:text-[#21283a] transition-all'>Iniciar sesión</NavLink>
-                                    <NavLink to='/register' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrate</NavLink>
-                                </div>
-                            )
-                        }
-                        
+                                )
+                            }
+                            
+                        </div>
+                        <div className='self-center mb-2'>
+                            {
+                                isAdmin && (
+                                    <NavLink to='/admin' className={ ({isActive}) => isActive ? "hidden" : 'inline-block text-white border rounded py-1 px-2 hover:scale-110 hover:font-bold transition-all duration-300' }>
+                                        Administración
+                                    </NavLink>
+                                )
+                            }
+                        </div>
                     </div>
 
                     {/* Children para los textos */}
