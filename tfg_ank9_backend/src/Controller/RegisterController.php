@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Dog;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +24,9 @@ class RegisterController extends AbstractController{
         $email = $request->request->get('email');
         $password = preg_replace('/\s+/', '', $request->request->get('password'));
         $name = $request->request->get('fullName');
+
+        // Regoger la bandera que enviamos desde React para el admin
+        $makeAdmin = $request->request->get('makeAdmin');
 
         // Extraemos los archivos del formData de react ($request->files)
         //Para lo que necesitaremos instalar VichUploaderBundle, sino hay que hacerlo de forma manual (mucho mas código)
@@ -52,7 +56,15 @@ class RegisterController extends AbstractController{
         $user = new User();
         $user->setEmail($email);
         $user->setName($name);
-        $user->setRoles(['ROLE_USER']);
+
+        // Si viene la bandera desde React es que queremos crear un admin asi que le damos los roles
+        if ($makeAdmin === 'true') {
+            // Si viene la bandera desde tu panel de Admin, le damos privilegios
+            $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
+        } else {
+            // Registro normal
+            $user->setRoles(['ROLE_USER']);
+        }
 
         // Hashear la contraseña
         $hashedPassword = $hasher->hashPassword($user, $password);
@@ -74,6 +86,45 @@ class RegisterController extends AbstractController{
             'status' => 'Usuario registrado!',
             'userId' => $user->getId() 
         ], 201);
+    }
+
+    #[Route('/api/edit-user/{id}', name: 'app_edit_user', methods: ['POST'])]
+    public function editUser(int $id, Request $request, UserPasswordHasherInterface $hasher, UserRepository $userRepository, EntityManagerInterface $em): Response
+    {
+
+        $user = $userRepository->find($id);
+
+        // Extraemos los textos del formData de react ($request->request)
+        $user->setName($request->request->get('name'));
+        $user->setEmail($request->request->get('email'));
+        $user->setaddress($request->request->get('address'));
+        $user->setCity($request->request->get('city'));
+
+        // Para la fecha
+        $birthDateStr = $request->request->get('birth_date');
+
+        if ($birthDateStr) {
+            // Convertir el string en un objeto DateTime
+            $user->setBirthDate(new \DateTime($birthDateStr));
+        } else {
+            // Si no hay fecha que actualizar
+            $user->setBirthDate(null);
+        }
+
+        // cambio de imagen (solo si se ha enviado una nueva)
+        $file = $request->files->get('imageFile');
+
+        if ($file){
+            // Borramos la foto antiguo el vichUploaderBundle lo hace automatico
+            $user->setImageFile($file);
+
+            // Forzar la actualización de la fecha de la edición
+            $user->setUpdatedAt(new \DateTimeImmutable());
+        }
+
+        $em->flush();
+
+       return new JsonResponse(['message' => 'Usuario actualizado con éxito'], 200);
     }
 
     // FUNCIÓN PARA REGISTRAR AL PERRO Y VINCULARLO

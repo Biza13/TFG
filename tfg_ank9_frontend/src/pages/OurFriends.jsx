@@ -106,8 +106,10 @@ export default function OurFriends() {
   }
 
   const handleDelete = async (id) => {
-
-    /* Pantalla como el alert pero con el aceptar o cancelar para corroborar si quiere eliminar */
+    /* lo que hace este bloque: window.confirm (la pantalla de alerta) si le damos a cancelar, este devuelve un false pero 
+    con la condición de ! delante lo convierte en un true por lo que entra dentro del if y hace el return, es decir se sale de la 
+    función sin hacer nada, por otro lado si le das a aceptar el window.confirm devuelve true pero al poner la condición de ! delante es un false
+    por lo que no entra dentro deel if y hace el eliminado el archivo */
     if (!window.confirm("¿Estás seguro de que quieres eliminar esta imagen o video?")) {
         return;
     }

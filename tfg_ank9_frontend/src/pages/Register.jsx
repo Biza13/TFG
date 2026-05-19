@@ -54,7 +54,7 @@ export default function Register() {
           }
       });
 
-      // Guardar el token en el local storage para poder registrar a los perros y el nombre para el header
+      // Guardar el token en el session storage para poder registrar a los perros y el nombre para el header
       const token = loginResponse.data.token;
       const userName = response.data.name;
       const userPicture = response.data.picture_route;
