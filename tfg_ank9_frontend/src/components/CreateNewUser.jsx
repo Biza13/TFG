@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function CreateNewUser({handleSubmit, setNewUserAdmin, newUserAdmin, setImgUser, onClose}) {
+export default function CreateNewUser({handleSubmit, setNewUser, newUser, setImgUser, onClose}) {
 
     const [personImg, setPersonImg] = useState();
 
@@ -8,7 +8,7 @@ export default function CreateNewUser({handleSubmit, setNewUserAdmin, newUserAdm
     const handleChange = (e) => {
         /* A la propiedad name de cada input se le va a dar el valor que escribamos en el input */
         const {name, value} = e.target;
-        setNewUserAdmin ({ ...newUserAdmin, [name]: value });
+        setNewUser ({ ...newUser, [name]: value });
     }
 
     /* Función para meter en el formData la imagen */

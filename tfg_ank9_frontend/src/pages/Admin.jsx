@@ -5,6 +5,7 @@ import UserCard from '../components/UserCard';
 import Footer from '../components/Footer';
 import CreateNewUser from '../components/CreateNewUser';
 import EditUser from '../components/EditUser';
+import Loading from '../components/Loading';
 
 export default function Admin() {
 
@@ -13,6 +14,9 @@ export default function Admin() {
   const token = sessionStorage.getItem('token');
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState();
+  const [isLoadingAdd, setIsLoadingAdd] = useState(false);
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editModal, setEditModal] = useState(false);
 
@@ -21,7 +25,7 @@ export default function Admin() {
   const [isAddRegularOpen, setIsAddRegularOpen] = useState(false);
 
   // Estados para añadir usuarios nuevos tanto admin como NO admin
-   const [newUserAdmin, setNewUserAdmin] = useState ({
+   const [newUser, setNewUser] = useState ({
     fullName: "",
     email: "",
     password: "",
@@ -39,7 +43,7 @@ export default function Admin() {
   por lo que todos los usuarios estan incluidos si no se escribe nada en el buscador */
   const filteredUsers = users.filter((user) => {
     const search = searchUser.toLowerCase();
-    // El ? es para que si esta propiedad existe y no es nula, continúa, si es nula o no existe, frena y no lances un error
+    // El ? es para que si esta propiedad existe y no es nula, continúa, si es nula o no existe, frena y no lanza un error
     const matchesName = user.name?.toLowerCase().includes(search);
     const matchesEmail = user.email?.toLowerCase().includes(search);
 
@@ -69,29 +73,32 @@ export default function Admin() {
   
   // Añadir usuario administrador
   const handleAddUserAdmin = (e) => {
-    setNewUserAdmin({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+    setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
     setImgUser(null);
     setIsAddAdminOpen(true);
   }
 
   // Añadir usuario regular
   const handleAddUserRegular = (e) => {
-    setNewUserAdmin({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+    setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
     setImgUser(null);
     setIsAddRegularOpen(true);
   }
 
   const handleSubbmitUser = async (e, isAdmin = false) => {
     e.preventDefault();
+
+    setIsLoadingAdd(true);
+
     const data = new FormData();
 
-    data.append("fullName", newUserAdmin.fullName);
-    data.append("email", newUserAdmin.email.trim());
-    data.append("password", newUserAdmin.password.trim());
+    data.append("fullName", newUser.fullName);
+    data.append("email", newUser.email.trim());
+    data.append("password", newUser.password.trim());
 
-    if (newUserAdmin.address) data.append("address", newUserAdmin.address);
-    if (newUserAdmin.city) data.append("city", newUserAdmin.city);
-    if (newUserAdmin.birth_date) data.append("birth_date", newUserAdmin.birth_date);
+    if (newUser.address) data.append("address", newUser.address);
+    if (newUser.city) data.append("city", newUser.city);
+    if (newUser.birth_date) data.append("birth_date", newUser.birth_date);
 
     if (imgUser) {
       data.append("imageFile", imgUser);
@@ -111,7 +118,7 @@ export default function Admin() {
       isAdmin ? alert("Usuario administrador creado con éxito") : alert("Usuario NO administrador creado con éxito");
 
       // LIMPIEZA DEL ESTADO
-      setNewUserAdmin({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+      setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
       setImgUser(null);
       setIsAddAdminOpen(false);
       setIsAddRegularOpen(false);
@@ -119,9 +126,15 @@ export default function Admin() {
 
     } catch (error) {
       console.error("Error al crear el usuario: ", error);
-      alert("Hubo un problema: " + (error.response?.data?.detail || "Revisa la consola"));
+
+      if (error.response?.status === 409) {
+        alert("No se puede crear el usuario, ya existe un usuario registrado con este email.");
+      } else {
+        alert("Hubo un problema: " + (error.response?.data?.detail || "Revisa la consola"));
+      }
+
     } finally {
-      setIsLoading(false);
+      setIsLoadingAdd(false);
     }
 
   }
@@ -139,6 +152,9 @@ export default function Admin() {
   };
 
   const handleSubmitEdit = async (e) => {
+
+    setIsLoadingEdit(true);
+
     e.preventDefault();
 
     const data = new FormData();
@@ -170,15 +186,24 @@ export default function Admin() {
 
     } catch (error) {
       console.error("Error al actualizar el usuario: ", error);
-      alert("Hubo un problema al editar: " + (error.response?.data?.detail || "Revisa la consola"));
+      
+      if (error.response?.status === 409) {
+        alert("No se puede editar el usuario, ya existe un usuario registrado con este email.");
+      } else {
+        alert("Hubo un problema: " + (error.response?.data?.detail || "Revisa la consola"));
+      }
+
     } finally {
-      setIsLoading(false);
+      setIsLoadingEdit(false);
     }
 
   }
 
   // Para borrar
   const handleSubmitDelete = async (id) => {
+
+    setIsLoadingDelete(true);
+
     /* Esto es lo mismo que en OurFriend para eliminar archivos, si el window.confirm recibe el aceptar (true), elimina el usuario,
     si recibe el cancelar (false) pues se sale de la función */
     if (window.confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
@@ -195,6 +220,8 @@ export default function Admin() {
 
         } catch (error) {
           console.error("Error al eliminar usuario", error)
+        } finally {
+          setIsLoadingDelete(false);
         }
     }
 
@@ -219,8 +246,8 @@ export default function Admin() {
               <CreateNewUser 
                 handleSubmit={(e) => handleSubbmitUser(e, true)} 
                 setImgUser={setImgUser} 
-                setNewUserAdmin={setNewUserAdmin} 
-                newUserAdmin={newUserAdmin}
+                setNewUser={setNewUser} 
+                newUser={newUser}
                 onClose={() => setIsAddAdminOpen(false)}>
 
                 </CreateNewUser>
@@ -235,8 +262,8 @@ export default function Admin() {
               <CreateNewUser 
                 handleSubmit={(e) => handleSubbmitUser(e, false)}
                 setImgUser={setImgUser} 
-                setNewUserAdmin={setNewUserAdmin} 
-                newUserAdmin={newUserAdmin}
+                setNewUser={setNewUser} 
+                newUser={newUser}
                 onClose={() => setIsAddRegularOpen(false)}>
 
                 </CreateNewUser>
@@ -291,6 +318,18 @@ export default function Admin() {
           <div className='size-16 animate-spin rounded-full border-8 border-white border-t-blue-400'></div>
           <p className="mt-4 text-xl font-bold text-white">Cargando usuarios...</p>
         </div>
+      )}
+
+      {isLoadingAdd && (
+        <Loading>Creando usuario...</Loading>
+      )}
+
+      {isLoadingEdit && (
+        <Loading>Editando usuario...</Loading>
+      )}
+
+      {isLoadingDelete && (
+        <Loading>Eliminando usuario...</Loading>
       )}
 
       {

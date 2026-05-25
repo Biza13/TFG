@@ -14,10 +14,13 @@ import ImgModal from '../components/ImgModal';
 import api from '../api/axios';
 import ImgCard from '../components/ImgCard';
 import AddButton from '../components/AddButton';
+import Loading from '../components/Loading';
 
 export default function OurFriends() {
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAddMulti, setIsLoadingAddMulti] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   /* Cogemos el rol para poner o no el boton de añadir y eliminar */
   const roles = sessionStorage.getItem('role');
@@ -34,6 +37,9 @@ export default function OurFriends() {
   const [imgGallery, setImgGallery] = useState([]);
 
   const fetchImgs = async () => {
+
+    setIsLoading(true);
+
     try {
       const response = await api.get("/galleries");
 
@@ -45,6 +51,8 @@ export default function OurFriends() {
     } catch (error) {
       const status = error.response ? error.response.status : 'No response';
       console.error("Error cargando la galeria. Status: ", status);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -77,6 +85,8 @@ export default function OurFriends() {
   const handleUpload = async (e) => {
     e.preventDefault();
 
+    setIsLoadingAddMulti(true);
+
     const data = new FormData();
 
     data.append('text', fileToAdd.text);
@@ -101,11 +111,16 @@ export default function OurFriends() {
       console.error("Response data:", error.response?.data);
       console.error("Response status:", error.response?.status);
       alert("Error al añadir el archivo");
+    } finally {
+      setIsLoadingAddMulti(false);
     }
 
   }
 
   const handleDelete = async (id) => {
+
+    setIsLoadingDelete(true);
+
     /* lo que hace este bloque: window.confirm (la pantalla de alerta) si le damos a cancelar, este devuelve un false pero 
     con la condición de ! delante lo convierte en un true por lo que entra dentro del if y hace el return, es decir se sale de la 
     función sin hacer nada, por otro lado si le das a aceptar el window.confirm devuelve true pero al poner la condición de ! delante es un false
@@ -129,6 +144,8 @@ export default function OurFriends() {
     } catch (error) {
       console.error("Error al borrar:", error);
       alert("No se pudo eliminar la imagen o el video");
+    } finally {
+      setIsLoadingDelete(false);
     }
 
   }
@@ -256,6 +273,18 @@ export default function OurFriends() {
 
       {/* Footer */}
       <Footer></Footer>
+
+      {isLoading && (
+        <Loading>Cargando...</Loading>
+      )}
+
+      {isLoadingAddMulti && (
+        <Loading>Añadiendo archivos...</Loading>
+      )}
+
+      {isLoadingDelete && (
+        <Loading>Eliminando archivos...</Loading>
+      )}
 
     </div>
   )

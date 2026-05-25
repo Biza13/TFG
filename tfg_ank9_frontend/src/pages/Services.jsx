@@ -12,10 +12,13 @@ import EditService from '../components/EditService'
 import AddButton from '../components/AddButton'
 import AddService from '../components/AddService'
 import DeleteService from '../components/DeleteService'
+import Loading from '../components/Loading';
 
 export default function Services() {
 
   const {isMobile, isTablet, isDesktop} = useDeviceType();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [services, setServices] = useState([]);
 
@@ -67,6 +70,8 @@ export default function Services() {
   /* Coger las servicios de la bd */
   const fetchServices = async () => {
 
+    setIsLoading(true);
+
     try{
       const response = await api.get("/services");
 
@@ -75,6 +80,8 @@ export default function Services() {
       setServices(services);
     }catch (error){
       console.error('Error cargando servicios:', error);
+    } finally {
+      setIsLoading(false);
     }
     
   }
@@ -144,6 +151,10 @@ export default function Services() {
 
       {/* Footer */}
       <Footer></Footer>
+
+      {isLoading && (
+        <Loading>Cargando servicios...</Loading>
+      )}
     </div>
     )
   }
@@ -214,6 +225,11 @@ export default function Services() {
 
         {/* Footer */}
         <Footer></Footer>
+
+        {isLoading && (
+           <Loading>Cargando servicios...</Loading>
+         )}
+
       </div>
     )
   }
@@ -289,6 +305,11 @@ export default function Services() {
 
         {/* Footer */}
         <Footer></Footer>
+
+        {isLoading && (
+          <Loading>Cargando servicios...</Loading>
+        )}
+
       </div>
     )
   }
