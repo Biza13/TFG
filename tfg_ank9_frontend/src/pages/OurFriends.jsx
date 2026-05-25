@@ -179,7 +179,7 @@ export default function OurFriends() {
 
         {
             isAdmin && (                
-                <div className="w-[80%] md:w-[35%] bg-[#21283a] p-6 rounded-2xl border border-white/10 my-8 flex flex-col m-auto items-center justify-center">
+                <div className="w-[95%] md:w-[35%] bg-[#21283a] p-3 md:p-6 rounded-2xl border border-white/10 my-8 flex flex-col m-auto items-center justify-center">
 
                   <label className="block text-white text-sm font-medium mb-2">
                     Añadir nuevo contenido a la galería

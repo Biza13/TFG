@@ -6,6 +6,8 @@ import Footer from '../components/Footer';
 import CreateNewUser from '../components/CreateNewUser';
 import EditUser from '../components/EditUser';
 import Loading from '../components/Loading';
+import DeleteButton from '../components/DeleteButton';
+import EditButton from '../components/EditButton';
 
 export default function Admin() {
 
@@ -229,14 +231,14 @@ export default function Admin() {
 
   return (
     <>
-      <div className='bg-[#1c2230] min-h-screen'>
+      <div className='bg-[#1c2230] min-h-screen flex flex-col'>
         <Header>
           {/* Para movil */}
           <p className='block md:hidden'>
             Administración
           </p>
         </Header>
-        <div className='flex flex-col justify-center items-center gap-3 mt-5'>
+        <div className='grow flex flex-col justify-center items-center gap-3 mt-5'>
 
           <button className={buttonClass} onClick={handleAddUserAdmin}>Añadir usuario Administrador</button>
 
@@ -271,37 +273,71 @@ export default function Admin() {
           }
         </div>
 
-        <div className='mt-5'>
+        <div className='mt-10 md:mt-5'>
           <button onClick={fetchUsers} className={`${buttonClass} mb-3`}>Mostrar lista de usuarios</button>
         </div>
-        <div className='mx-5 p-5 text-white'>
+        <div className='mx-2 md:mx-5 p-0 md:p-5 text-white'>
           {
             users.length > 0 && (
 
+              /* Div para tablet y desktop */
               <div>
-                <input type="text" value={searchUser} onChange={(e) => setSearchUser(e.target.value)} placeholder='🔍 Buscar ususario' className='bg-white rounded p-1 text-[#1c2230]' />
+                <div className='hidden md:block'>
+                  <input type="text" value={searchUser} onChange={(e) => setSearchUser(e.target.value)} placeholder='🔍 Buscar ususario' className='bg-white rounded p-1 text-[#1c2230]' />
+                  
+                  <table className='w-full text-center mt-3'>
+                    <thead>
+                      <tr className='text-2xl'>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Eliminar/editar</th>
+                      </tr>
+                    </thead>
+                  
+                    <tbody>
+                      {
+                        filteredUsers.map((user) => (
+                          <UserCard key={user.id} user={user} onClickDelete={handleSubmitDelete} OnClickEdit={handleEditUser}></UserCard>
+                        ))
+                      }
+                    </tbody>
+                  
+                  </table>
                 
-                <table className='w-full text-center mt-3'>
-                  <thead>
-                    <tr className='text-2xl'>
-                      <th>Nombre</th>
-                      <th>Email</th>
-                      <th>Rol</th>
-                      <th>Eliminar/editar</th>
-                    </tr>
-                  </thead>
-                
-                  <tbody>
+                </div>
+
+                {/* Div para moviles */}
+                <div className='flex flex-col md:hidden gap-4'>
                     {
                       filteredUsers.map((user) => (
-                        <UserCard key={user.id} user={user} onClickDelete={handleSubmitDelete} OnClickEdit={handleEditUser}></UserCard>
+                        <div key={user.id} className='border rounded-2xl p-2 text-center'>
+                          <div>
+                            <p className='font-bold'>Nombre</p>
+                            <p className='font-light'>{user.name}</p>
+                          </div>
+                          <div>
+                            <p className='font-bold'>Email</p>
+                            <p className='font-light'>{user.email}</p>
+                          </div>
+                          <div>
+                            <p className='font-bold'>Rol</p>
+                            <p className='font-light'>{user.roles.join(",")}</p>
+                          </div>
+                          <div>
+                            <p className='font-bold'>Editar/Eliminar</p>
+                            <div className='flex gap-3 justify-center p-2'>
+                              <DeleteButton onClick={() => handleSubmitDelete(user.id)} optionalClass='!static !w-7 !h-7 !m-0 flex items-center justify-center'></DeleteButton>
+                              <EditButton onClick={() => handleEditUser(user)} optionalClass='!static !w-7 !h-7 !m-0 flex items-center justify-center'></EditButton>
+                            </div>
+                          </div>
+                        </div>
                       ))
                     }
-                  </tbody>
-                
-                </table>
+                </div>
 
               </div>
+              
           )}
           
         </div>
