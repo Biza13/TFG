@@ -4,6 +4,7 @@ import api from '../api/axios'
 import Footer from '../components/Footer';
 import { NavLink } from 'react-router';
 import {animate, motion} from 'framer-motion'
+import Loading from '../components/Loading';
 
 export default function LogIn() {
   const [email, setEmail] = useState('');

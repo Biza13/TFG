@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-//axios es una libreria para que hace el fetch de toda la vida
+//axios es una libreria que hace el fetch de toda la vida
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api'
+    // Aqui lo pondremos en una variable de entorno para pasarla mas adelante cuando tengamos la url con import.meta.env.nombreDeLaVariable que esta en el Dockerfile definida
+    baseURL: import.meta.env.VITE_API_URL
 });
 
 // Para que refresque el token
@@ -19,7 +20,7 @@ api.interceptors.response.use(
                 const refreshToken = localStorage.getItem('refresh_token');
                 
                 // Pedimos un nuevo token al endpoint de Symfony
-                const res = await axios.post('http://localhost:8000/api/token/refresh', {
+                const res = await axios.post(`${import.meta.env.VITE_API_URL}/token/refresh`, {
                     refresh_token: refreshToken
                 });
 

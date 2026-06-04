@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tfg-frontend-deploy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: tfg-frontend
@@ -29,4 +29,5 @@ spec:
     - protocol: TCP
       port: 80        # Puerto por el que entrarás desde el navegador
       targetPort: 80  # Puerto donde escucha tu Nginx
-  type: LoadBalancer  # Esta será la URL pública para entrar a tu web
+  #type: LoadBalancer  # Esta será la URL pública para entrar a tu web
+  type: ClusterIP      # ponemos clusterIp porque el unico punto de entrada "público" es el ingress y este redirige al frontend

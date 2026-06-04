@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tfg-backend-deploy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: tfg-backend
@@ -17,8 +17,17 @@ spec:
         - name: php-container
           image: bego13/tfg-php:latest
           env:
+          # cojemos del secret.yaml la url de la rds
             - name: DATABASE_URL
-              value: "mysql://admin:awsrdspassword@database-1.cpkysee28b5r.us-east-1.rds.amazonaws.com:3306/tfg_db?serverVersion=8.0.32&charset=utf8mb4"
+              valueFrom:
+                secretKeyRef:
+                  name: tfg-db-secret
+                  key: DATABASE_URL
+              #Aplicacion en produccion
+            - name: APP_ENV
+              value: "prod"
+            - name: JWT_PASSPHRASE
+              value: "ce5880c03aacade6d7b3f67e3dc46123983219bbde8515593dc7f1b5eeca985b"
         
         # Contenedor del servidor Nginx que sirve al Back
         - name: nginx-back-container
@@ -37,5 +46,4 @@ spec:
     - protocol: TCP
       port: 80         
       targetPort: 80 # Puerto donde escucha Symfony (el que pusimos en Docker)
-  #type: ClusterIP      # solo visible dentro del clúster, es decir solo el frontend podra acceder a el (back)
-  type: LoadBalancer
+  type: ClusterIP      # solo visible dentro del clúster, es decir solo el frontend podra acceder a el (back)
