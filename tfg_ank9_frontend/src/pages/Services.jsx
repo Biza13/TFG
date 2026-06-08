@@ -75,7 +75,8 @@ export default function Services() {
     try{
       const response = await api.get("/services");
 
-      const services = response.data.member;
+      // si es undefined (??) devolvera un array vacio. para que no de error en caso de estar la bd vacía
+      const services = response.data.member ?? [];
 
       setServices(services);
     }catch (error){
@@ -264,7 +265,7 @@ export default function Services() {
         <div className='grow flex flex-col justify-center'>
           <div className='w-[95%] m-auto flex gap-10 my-5 flex-wrap justify-center'>
               {
-                services.map((service) => (
+                services?.map((service) => (
                   <ServiceCard
                   key = {service.id}
                   title = {service.name}

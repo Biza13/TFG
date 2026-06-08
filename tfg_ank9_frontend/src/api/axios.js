@@ -6,6 +6,15 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL
 });
 
+// Añadir el token JWT en cada petición automáticamente en vez de hacerlo manuelmente en cada peticion
+api.interceptors.request.use((config) => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+});
+
 // Para que refresque el token
 api.interceptors.response.use(
     (response) => response, // Si la respuesta es ok, no hacemos nada

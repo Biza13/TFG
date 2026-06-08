@@ -32,7 +32,8 @@ export default function Carousel({isAdmin, handleDelete}) {
         const response = await api.get("/galleries");
 
         // Los videos y las fotos estan en response.data.member
-        const elements = response.data.member;
+        // si es undefined (??) devolvera un array vacio. para que no de error en caso de estar la bd vacía
+        const elements = response.data.member ?? [];
 
         const onlyVideos = elements.filter(item => item.type === 'video');
             setVideos(onlyVideos);

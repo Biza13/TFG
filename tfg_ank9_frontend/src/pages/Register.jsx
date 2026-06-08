@@ -57,11 +57,14 @@ export default function Register() {
 
       // Guardar el token en el session storage para poder registrar a los perros y el nombre para el header
       const token = loginResponse.data.token;
-      const userName = response.data.name;
-      const userPicture = response.data.picture_route;
+      const userName = loginResponse.data.name;
+      const userPicture = loginResponse.data.picture_route;
+      const userRole = loginResponse.data.role;
       sessionStorage.setItem('token', token);
+      sessionStorage.setItem('refresh_token', loginResponse.data.refresh_token);
       sessionStorage.setItem('userName', userName);
       sessionStorage.setItem('userPicture', userPicture);
+      sessionStorage.setItem('role', userRole);
 
       // Redirigir al registro de perros
       window.location.href = '/dogRegister';

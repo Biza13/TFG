@@ -44,7 +44,8 @@ export default function OurFriends() {
       const response = await api.get("/galleries");
 
       // Los videos y las fotos estan en response.data.member
-        const elements = response.data.member;
+      // si es undefined (??) devolvera un array vacio. para que no de error en caso de estar la bd vacía
+        const elements = response.data.member ?? [];
 
         const onlyImgs = elements.filter(item => item.type === 'image');
             setImgGallery(onlyImgs);
@@ -97,11 +98,7 @@ export default function OurFriends() {
     }
 
     try {
-      await api.post("/galleries", data,{
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      });
+      await api.post("/galleries", data);
       alert("Archivo añadido con éxito");
       window.location.reload();
     
@@ -133,6 +130,7 @@ export default function OurFriends() {
       const token = sessionStorage.getItem("token");
 
       await api.delete(`/galleries/${id}`, {
+        // Este parentesis lo podria eliminar como he hecho en el handleUpload ya que esta ya puesto por defecto en axios.js
         headers: {
                 'Authorization': `Bearer ${token}`
             }

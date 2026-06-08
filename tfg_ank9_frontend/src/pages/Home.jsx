@@ -31,7 +31,8 @@ export default function Home() {
     try{
       const response = await api.get("/services");
 
-      const services = response.data.member;
+      // si es undefined (??) devolvera un array vacio. para que no de error en caso de estar la bd vacía
+      const services = response.data.member ?? [];
       console.log(response.data);
 
       setServices(services);
@@ -246,7 +247,8 @@ export default function Home() {
                     <div className='w-full grid grid-cols-4 align-baseline py-4 gap-6 m-auto'>
 
                         {
-                          services.map((service) => (
+                            /* El services? significa esto: services !== null && services !== undefined ? services.map(...) : undefined */
+                          services?.map((service) => (
                             <ServiceCard
                             key = {service.id}
                             title = {service.name}

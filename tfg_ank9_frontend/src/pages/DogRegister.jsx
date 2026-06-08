@@ -58,7 +58,7 @@ export default function Register() {
         
         <Header>
           <p className='hidden md:block font-bold text-3xl mt-5 w-[90%] lg:w-[60%]'>
-            Si quieres ser parte de nuestra familia, registrate y contacta con nosotros
+            Registra a tu amigo peludo para formar parte de la familia
           </p>
         </Header>
       
