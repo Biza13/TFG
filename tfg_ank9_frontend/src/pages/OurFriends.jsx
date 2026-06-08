@@ -255,7 +255,7 @@ export default function OurFriends() {
           {imgGallery.map((item, index) => {
             return <ImgCard 
                       img={item} 
-                      imgSelected={() => setSelectedImg(`http://localhost:8000/uploads/gallery/${item.imgvideo_route}`)}
+                      imgSelected={() => setSelectedImg(`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${item.imgvideo_route}`)}
                       handleDelete={() => handleDelete(item.id)}  
                       isAdmin={isAdmin}
                     ></ImgCard>

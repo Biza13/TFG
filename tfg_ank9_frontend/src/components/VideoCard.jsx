@@ -18,7 +18,7 @@ export default function VideoCard({video, isAdmin, handleDelete}) {
                       playsInline
                   >
                       {/* Ajusta la URL según donde guardes los archivos en Symfony */}
-                      <source src={`http://localhost:8000/uploads/gallery/${video.imgvideo_route}`} type="video/mp4" />
+                      <source src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${video.imgvideo_route}`} type="video/mp4" />
                       Tu navegador no soporta videos.
                   </video>
                   

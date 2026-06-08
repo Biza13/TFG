@@ -95,7 +95,7 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
                             isHome = {true}
                             >
                               {service.shortDescription}
@@ -173,7 +173,7 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
                             isHome = {true}
                             >
                               {service.shortDescription}
@@ -253,7 +253,7 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`http://localhost:8000/uploads/services/${service.icon_route}`}
+                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
                             isHome = {true}
                             >
                               {service.shortDescription}

@@ -20,7 +20,7 @@ export default function Header({children}) {
 
     // Definimos la base de la URL de tu API, cuando pongamos dominio habra que cambiarlo
     // Esto es para poner la foto de perfil
-    const API_BASE_URL = 'http://localhost:8000';
+    const API_BASE_URL = `${import.meta.env.VITE_UPLOADS_URL}`;
 
     const role = sessionStorage.getItem('role');
 

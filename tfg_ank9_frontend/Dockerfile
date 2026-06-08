@@ -3,9 +3,12 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# URL del backend que la pondremos cuando hagamos el build del dockerfile (docker build --build-arg VITE_API_URL=urlQueSea)
+# URLs del backend que la pondremos cuando hagamos el build del dockerfile (variables) (docker build --build-arg VITE_API_URL=urlQueSea)
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
+
+ARG VITE_UPLOADS_URL
+ENV VITE_UPLOADS_URL=$VITE_UPLOADS_URL
 
 # Copiamos los archivos de configuración de paquetes
 COPY package*.json ./

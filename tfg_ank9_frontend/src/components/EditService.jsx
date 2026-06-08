@@ -45,7 +45,7 @@ export default function EditService({closeEditModal, service}) {
         features: service.features || '',
         titleFeatures2: service.titleFeatures2 || '',
         features2: service.features2 || '',
-        icon_route: `http://localhost:8000/uploads/services/${service.icon_route}` || ''
+        icon_route: `${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}` || ''
       });
     }
   }, [service]);
@@ -165,7 +165,7 @@ export default function EditService({closeEditModal, service}) {
 
             {/* Revisar esto de las imagenes para saber si se modificaria o no */}
             <div className='flex flex-col gap-1 my-2 justify-center items-center'>
-              <img src={`http://localhost:8000/uploads/services/${service.icon_route}`} alt="" className='w-20 h-20' />
+              <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} alt="" className='w-20 h-20' />
               
             <label 
               htmlFor="file-upload" 
