@@ -28,6 +28,8 @@ export default function LogIn() {
       const userName = response.data.name;
       const userRole = response.data.role;
 
+      console.log('Respuesta login:', response.data);
+
       // Y lo guardamos en el sessionStorage
       sessionStorage.setItem('token', token);
       // Tambien guardamos el refrescado

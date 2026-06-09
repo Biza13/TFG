@@ -17,7 +17,7 @@ spec:
         - name: php-container
           image: bego13/tfg-php:latest
           env:
-          # cojemos del secret.yaml la url de la rds
+            # cojemos del secret.yaml la url de la rds
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -28,12 +28,20 @@ spec:
               value: "prod"
             - name: JWT_PASSPHRASE
               value: "ce5880c03aacade6d7b3f67e3dc46123983219bbde8515593dc7f1b5eeca985b"
+          #Para el volumen EFS para las imagenes/videos...
+          volumeMounts:
+            - name: uploads
+              mountPath: /var/www/symfony/public/uploads
         
         # Contenedor del servidor Nginx que sirve al Back
         - name: nginx-back-container
           image: bego13/tfg-nginx-back:latest
           ports:
             - containerPort: 80
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: tfg-uploads-pvc
 ---
 apiVersion: v1
 kind: Service
