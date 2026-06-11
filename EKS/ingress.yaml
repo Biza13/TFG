@@ -24,6 +24,14 @@ spec:
                 name: tfg-backend-service
                 port:
                   number: 80
+          #Este pathe es para las imagenes de la cabecera y de todos los lados, para que lea la url del backend en este caso ya que hace referencia al deploy del back
+          - path: /uploads
+            pathType: Prefix
+            backend:
+              service:
+                name: tfg-backend-service
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:

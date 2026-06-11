@@ -8,6 +8,7 @@ export default function Register() {
 
   /* States del usuario */
   const [personName, setPersonName] = useState("");
+  const [personLastName, setPersonLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [street, setStreet] = useState("");
@@ -25,7 +26,8 @@ export default function Register() {
 
     // Metemos los datos de la persona con el append dando clave valor
     // El nombre entre comillas debera de ser el mismo en la entidad
-    formData.append('fullName', personName);
+    formData.append('name', personName);
+    formData.append('lastName', personLastName);
     formData.append('email', email.trim());
     formData.append('password', password.trim());
     // Si los campos pueden ser null hay que poner un if, para mandar un null y  no una cadena vacia
@@ -92,14 +94,19 @@ export default function Register() {
               
               <p className='text-2xl text-white font-bold text-center mb-3'>Datos personales</p>
           
-              <div className='w-full rounded bg-[#8a8a8a] p-5 flex flex-wrap flex-col md:flex-row justify-between'>
+              <div className='w-full rounded bg-[#8a8a8a] p-5 flex flex-wrap flex-col md:flex-row justify-between gap-5 md:gap-0'>
               
                 {/* div 1 datos obligatorios */}
                 <div className='flex flex-col gap-5 w-full md:w-[50%] px-2'>
               
                   <div>
-                    <label htmlFor="" className='flex gap-2'>Nombre completo <p className='text-red-600'>*</p></label>
-                    <input type="text" placeholder='Full name' onChange={e => setPersonName(e.target.value)} className='w-full md:w-[90%] bg-white rounded p-2 focus:outline-none focus:ring-3 focus:ring-[#21283a]' required />
+                    <label htmlFor="" className='flex gap-2'>Nombre <p className='text-red-600'>*</p></label>
+                    <input type="text" placeholder='Name' onChange={e => setPersonName(e.target.value)} className='w-full md:w-[90%] bg-white rounded p-2 focus:outline-none focus:ring-3 focus:ring-[#21283a]' required />
+                  </div>
+
+                  <div>
+                    <label htmlFor="" className='flex gap-2'>Apellidos <p className='text-red-600'>*</p></label>
+                    <input type="text" placeholder='Last name' onChange={e => setPersonLastName(e.target.value)} className='w-full md:w-[90%] bg-white rounded p-2 focus:outline-none focus:ring-3 focus:ring-[#21283a]' required />
                   </div>
               
                   <div>

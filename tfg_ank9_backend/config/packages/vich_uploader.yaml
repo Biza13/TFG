@@ -14,13 +14,6 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/uploads/dogs'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
-        # En proceso...
-        # Mapeo para el CAROUSEL
-        carousel_media:
-            uri_prefix: /uploads/carousel
-            upload_destination: '%kernel.project_dir%/public/uploads/carousel'
-            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
-
         # Mapeo para la GALERÍA
         gallery_images:
             uri_prefix: /uploads/gallery

@@ -20,6 +20,7 @@ class AuthenticationSuccessListener
         // Aquí añadimos los campos que queremos que React reciba
         $data['email'] = $user->getUserIdentifier();
         $data['name'] = $user->getName();
+        $data['lastName'] = $user->getLastName();
         $data['role'] = $user->getRoles();
 
         // Usamos una comprobación de seguridad para la foto

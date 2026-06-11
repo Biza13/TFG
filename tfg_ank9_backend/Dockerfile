@@ -10,6 +10,9 @@ RUN apk update && apk add --no-cache \
 RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install pdo_mysql intl gd zip
 
+# PAra que se puedan subir los vides sino son demasiado grandes
+COPY uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /var/www/symfony
 # Copiamos el código de Symfony a la imagen
 COPY . .

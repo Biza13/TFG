@@ -12,6 +12,14 @@ spec:
       labels:
         app: tfg-backend
     spec:
+      #este es un contenedor que se arranca y despues se borra para que la carpeta especificada tenga los permisos en el efs
+      initContainers:
+        - name: fix-uploads-permissions
+          image: busybox
+          command: ["sh", "-c", "chmod -R 777 /var/www/symfony/public/uploads"]
+          volumeMounts:
+            - name: uploads
+              mountPath: /var/www/symfony/public/uploads
       containers:
         # Contenedor de php
         - name: php-container
@@ -38,6 +46,9 @@ spec:
           image: bego13/tfg-nginx-back:latest
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: uploads
+              mountPath: /var/www/symfony/public/uploads
       volumes:
         - name: uploads
           persistentVolumeClaim:

@@ -23,7 +23,7 @@ class RegisterController extends AbstractController{
         // Extraemos los textos del formData de react ($request->request)
         $email = $request->request->get('email');
         $password = preg_replace('/\s+/', '', $request->request->get('password'));
-        $name = $request->request->get('fullName');
+        $name = $request->request->get('name');
 
         // Regoger la bandera que enviamos desde React para el admin
         $makeAdmin = $request->request->get('makeAdmin');
@@ -56,6 +56,7 @@ class RegisterController extends AbstractController{
         $user = new User();
         $user->setEmail($email);
         $user->setName($name);
+        $user->setLastName($request->request->get('lastName'));
 
         // Si viene la bandera desde React es que queremos crear un admin asi que le damos los roles
         if ($makeAdmin === 'true') {
@@ -96,6 +97,7 @@ class RegisterController extends AbstractController{
 
         // Extraemos los textos del formData de react ($request->request)
         $user->setName($request->request->get('name'));
+        $user->setLastName($request->request->get('lastName'));
         $user->setEmail($request->request->get('email'));
         $user->setaddress($request->request->get('address'));
         $user->setCity($request->request->get('city'));
