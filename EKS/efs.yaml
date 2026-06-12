@@ -23,7 +23,7 @@ spec:
   csi:
     driver: efs.csi.aws.com
     # ID del efs
-    volumeHandle: fs-0e319451d81eb01ad
+    volumeHandle: fs-0732ffc5de12b9a17
 
 ---
 

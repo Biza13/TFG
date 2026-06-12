@@ -28,7 +28,8 @@ export default function Admin() {
 
   // Estados para añadir usuarios nuevos tanto admin como NO admin
    const [newUser, setNewUser] = useState ({
-    fullName: "",
+    name: "",
+    lastName: "",
     email: "",
     password: "",
     address: "",
@@ -75,14 +76,14 @@ export default function Admin() {
   
   // Añadir usuario administrador
   const handleAddUserAdmin = (e) => {
-    setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+    setNewUser({ name: "", lastName: "", email: "", password: "", address: "", city: "", birth_date: "" });
     setImgUser(null);
     setIsAddAdminOpen(true);
   }
 
   // Añadir usuario regular
   const handleAddUserRegular = (e) => {
-    setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+    setNewUser({ name: "", lastName: "", email: "", password: "", address: "", city: "", birth_date: "" });
     setImgUser(null);
     setIsAddRegularOpen(true);
   }
@@ -94,7 +95,8 @@ export default function Admin() {
 
     const data = new FormData();
 
-    data.append("fullName", newUser.fullName);
+    data.append("name", newUser.name);
+    data.append("lastName", newUser.lastName);
     data.append("email", newUser.email.trim());
     data.append("password", newUser.password.trim());
 
@@ -120,7 +122,7 @@ export default function Admin() {
       isAdmin ? alert("Usuario administrador creado con éxito") : alert("Usuario NO administrador creado con éxito");
 
       // LIMPIEZA DEL ESTADO
-      setNewUser({ fullName: "", email: "", password: "", address: "", city: "", birth_date: "" });
+      setNewUser({ name: "", lastName: "", email: "", password: "", address: "", city: "", birth_date: "" });
       setImgUser(null);
       setIsAddAdminOpen(false);
       setIsAddRegularOpen(false);
@@ -162,6 +164,7 @@ export default function Admin() {
     const data = new FormData();
 
     if (selectedUser.name) data.append("name", selectedUser.name.trim());
+    if (selectedUser.lastName) data.append("lastName", selectedUser.lastName);
     if (selectedUser.email) data.append("email", selectedUser.email.trim());
     if (selectedUser.birth_date) data.append("birth_date", selectedUser.birth_date);
     if (selectedUser.address) data.append("address", selectedUser.address);

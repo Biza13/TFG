@@ -20,6 +20,11 @@ export default function EditUser({setEditModal, handleChange, handleSubmit, user
               <label htmlFor="name" className='flex gap-2'>Nombre <p className='text-red-500'>*</p></label>
               <input type="text" name='name' value={user.name} onChange={handleChange} placeholder='Nombre de usuario administrador' className='bg-white border rounded p-2' />
             </div>
+
+            <div className='flex flex-col flex-1'>
+              <label htmlFor="lastName" className='flex gap-2'>Apellidos <p className='text-red-500'>*</p></label>
+              <input type="text" name='lastName' value={user.lastName || ""} onChange={handleChange} placeholder='Apellidos' className='bg-white border rounded p-2' />
+            </div>
             
             <div className='flex flex-col flex-1'>
               <label htmlFor="email" className='flex gap-2'>Email <p className='text-red-500'>*</p></label>

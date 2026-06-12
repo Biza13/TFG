@@ -28,7 +28,12 @@ export default function CreateNewUser({handleSubmit, setNewUser, newUser, setImg
           <div className='w-full flex flex-col md:flex-row gap-5 mt-4 md:mt-0'>
             <div className='flex flex-col flex-1'>
               <label htmlFor="name" className='flex gap-2'>Nombre <p className='text-red-500'>*</p></label>
-              <input type="text" name='fullName' onChange={handleChange} placeholder='Nombre de usuario administrador' className='bg-white border rounded p-2' />
+              <input type="text" name='name' onChange={handleChange} placeholder='Nombre de usuario administrador' className='bg-white border rounded p-2' />
+            </div>
+
+            <div className='flex flex-col flex-1'>
+              <label htmlFor="lastName" className='flex gap-2'>Apellidos <p className='text-red-500'>*</p></label>
+              <input type="text" name='lastName' onChange={handleChange} placeholder='Nombre de usuario administrador' className='bg-white border rounded p-2' />
             </div>
             
             <div className='flex flex-col flex-1'>
