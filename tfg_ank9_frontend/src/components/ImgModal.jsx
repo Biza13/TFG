@@ -8,7 +8,7 @@ export default function ImgModal({imgSrc, setSelectedImg}) {
         
         <button 
           onClick={() => setSelectedImg(null)}
-          className='absolute top-0 right-0 z-60 bg-red-500 text-black w-10 h-10 rounded-full flex items-center justify-center font-bold text-2xl hover:bg-gray-200 transition-colors'
+          className='absolute top-0 right-0 z-60 bg-red-500 text-black w-10 h-10 rounded-full flex items-center justify-center font-bold text-2xl hover:bg-gray-200 transition-colors cursor-pointer'
         >
           ✕
         </button>

@@ -8,6 +8,7 @@ import EditUser from '../components/EditUser';
 import Loading from '../components/Loading';
 import DeleteButton from '../components/DeleteButton';
 import EditButton from '../components/EditButton';
+import DogsModal from '../components/DogsModal'
 
 export default function Admin() {
 
@@ -21,6 +22,7 @@ export default function Admin() {
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [dogModal, setDogModal] = useState(false);
 
   // estados para enseñar formularios para añadir usuarios
   const [isAddAdminOpen, setIsAddAdminOpen] = useState(false);
@@ -212,8 +214,11 @@ export default function Admin() {
     /* Esto es lo mismo que en OurFriend para eliminar archivos, si el window.confirm recibe el aceptar (true), elimina el usuario,
     si recibe el cancelar (false) pues se sale de la función */
     if (window.confirm("¿Estás seguro de que quieres eliminar este usuario?")) {
+
         try {
+          
           const token = sessionStorage.getItem("token");
+
           await api.delete(`/user/${id}`, {
             headers: {
                     'Authorization': `Bearer ${token}`
@@ -230,6 +235,12 @@ export default function Admin() {
         }
     }
 
+  }
+
+  // Para ver los perros
+  const viewDogs = (user) => {
+    setSelectedUser(user);
+    setDogModal(true);
   }
 
   return (
@@ -301,7 +312,7 @@ export default function Admin() {
                     <tbody>
                       {
                         filteredUsers.map((user) => (
-                          <UserCard key={user.id} user={user} onClickDelete={handleSubmitDelete} OnClickEdit={handleEditUser}></UserCard>
+                          <UserCard key={user.id} user={user} onClickDelete={handleSubmitDelete} OnClickEdit={handleEditUser} onClickDogs={viewDogs}></UserCard>
                         ))
                       }
                     </tbody>
@@ -382,6 +393,12 @@ export default function Admin() {
             setImgUser={setImgUser}>
 
             </EditUser>
+        )
+      }
+
+      {
+        dogModal && (
+          <DogsModal setDogModal={setDogModal} user={selectedUser}></DogsModal>
         )
       }
 

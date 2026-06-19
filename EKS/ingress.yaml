@@ -1,3 +1,4 @@
+# el Ingress recibe las peticiones de internet y decide donde mandarlas
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,9 +7,11 @@ metadata:
     kubernetes.io/ingress.class: nginx
     # El cert-manager es para que gestione el certificado para el https el solo y así no lo tenemos que hacer en el nginx.conf
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    #permite subir archivos de hasta 50M
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
 spec:
   tls:
+    # https para este dominio
     - hosts:
         - begonya.work.gd
       secretName: tfg-tls

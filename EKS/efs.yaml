@@ -2,12 +2,14 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: efs-sc
+# Le dice que use el driver CSI de EFS que instalamos en el clúster
 provisioner: efs.csi.aws.com
 mountOptions:
   - tls
 
 ---
 
+# Representa el disco real al sistema de archivos que nos vamos a conectar (EFS de AWS con el id fs-...)
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -23,10 +25,11 @@ spec:
   csi:
     driver: efs.csi.aws.com
     # ID del efs
-    volumeHandle: fs-0732ffc5de12b9a17
+    volumeHandle: fs-0ff7fc7b9507295a9
 
 ---
 
+# La petición que hace el pod para usar el volumen
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

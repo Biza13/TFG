@@ -41,6 +41,7 @@ export default function Register() {
       const response = await api.post('/register-user', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          
         },
       });
 

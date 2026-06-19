@@ -21,7 +21,7 @@ spec:
             - name: uploads
               mountPath: /var/www/symfony/public/uploads
       containers:
-        # Contenedor de php
+        # Contenedor de php donde estan los archivos del back
         - name: php-container
           image: bego13/tfg-php:latest
           env:
