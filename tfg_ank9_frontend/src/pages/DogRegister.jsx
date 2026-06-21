@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import api from '../api/axios';
+import Loading from '../components/Loading';
 
 export default function Register() {
 
