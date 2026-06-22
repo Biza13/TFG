@@ -3,13 +3,6 @@ import { useState } from 'react';
 import Header from '../components/Header'
 import Footer from '../components/Footer';
 import Carousel from '../components/Carousel'
-import p1 from '../assets/img/p1.jpeg'
-import p2 from '../assets/img/p2.jpg'
-import p3 from '../assets/img/p3.jpg'
-import p4 from '../assets/img/p4.jpg'
-import p5 from '../assets/img/p5.jpg'
-import p6 from '../assets/img/p6.png'
-import p7 from '../assets/img/p7.jpeg'
 import ImgModal from '../components/ImgModal';
 import api from '../api/axios';
 import ImgCard from '../components/ImgCard';
@@ -166,7 +159,7 @@ export default function OurFriends() {
         </div>
         
         {/* Children para cuando esta en movil */}
-        <p className='block md:hidden'>
+        <p className='block md:hidden text-center'>
           Nuestros amigos
         </p>
         
@@ -184,18 +177,21 @@ export default function OurFriends() {
                   </label>
                   
                   <div className='w-full flex flex-col justify-center items-center'>
-                    <input 
-                      type="file" 
-                      onChange={handleAddMedia}
-                      accept="image/*,video/*"
-                      className="block w-fit text-sm text-gray-400
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                       file:bg-white/10 file:text-white
-                       hover:file:bg-white/20
-                        file:cursor-pointer"
-                    />
+
+                    <div className='flex flex-col md:flex-row gap-0 md:gap-4'>
+                      <label className="cursor-pointer bg-white/10 hover:bg-white/20 text-white text-sm font-semibold py-2 px-4 rounded-full text-center">
+                        Seleccionar archivo
+                        <input 
+                          type="file" 
+                          onChange={handleAddMedia}
+                          accept="image/*,video/*"
+                          className="hidden"
+                        />
+                      </label>
+                      <p className="text-gray-400 text-sm mt-2 text-center">
+                        {fileToAdd.imgvideo_route ? fileToAdd.imgvideo_route.name : "Ningún archivo seleccionado"}
+                      </p>
+                    </div>
                     {fileToAdd.imgvideo_route && (
                       <div className='text-white my-5 w-full flex-flex-col text-center'>
 

@@ -40,7 +40,7 @@ export default function DogsModal({setDogModal, user}) {
 
             {/* Para tablet y desktop */}
             <table className='w-full border hidden md:table'>
-                <thead className='border'>
+                <thead>
                     <tr className='text-left'>
                         <th className='p-2'>Nombre</th>
                         <th className='p-2'>Raza</th>

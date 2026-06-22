@@ -52,8 +52,8 @@ export default function Header({children}) {
     }, [])
 
     //Estilos para que se quede subrayado la página en la que estás.
-    const onStyle = 'transition-transform duration-500 active:scale-125 border-b-3 text-sm';
-    const offStyle = 'transition-transform duration-500 active:scale-125 lg:hover:scale-125 text-sm';
+    const onStyle = 'transition-transform duration-500 text-base md:text-xs lg:text-base active:scale-125 border-b-3 text-sm';
+    const offStyle = 'transition-transform duration-500 text-base md:text-xs lg:text-base active:scale-125 lg:hover:scale-125 text-sm';
 
     //Para movil
     if (isMobile) {
@@ -113,16 +113,19 @@ export default function Header({children}) {
                 <NavLink to='/' className={ ({isActive}) => isActive? "hidden" : "" }>Inicio</NavLink>
                 <NavLink to='/services' className={ ({isActive}) => isActive? "hidden" : "" }>Servicios</NavLink>
                 <NavLink to='/ourFriends' className={ ({isActive}) => isActive? "hidden" : "" }>Nuestros amigos</NavLink>
-                <NavLink to='/dogRegister' className={ ({isActive}) => isActive? "hidden" : "" }>Registrar perro</NavLink>
+
                 {
-                    !isLogged && (
-                        <div className='flex flex-col justify-center items-center gap-5'>
-                            <NavLink to='/register' className={ ({isActive}) => isActive? "hidden" : "" }>Registro</NavLink>
-                            <NavLink to='/login'  className={ ({isActive}) => isActive? "hidden" : "bg-white text-[#21283a] w-full text-center px-2 py-2 rounded-lg" }>Iniciar sesión</NavLink>
-                        </div>
-                    )
+                    isLogged
+                        ? <>
+                            <NavLink to='/dogRegister' className={ ({isActive}) => isActive? "hidden" : "" }>Registrar perro</NavLink>
+                            <NavLink to='/calendar' className={ ({isActive}) => isActive ? "hidden" : "" }>Calendario</NavLink>
+                            <NavLink to='/admin' className={ ({isActive}) => isActive ? "hidden" : "" }>Administración</NavLink>
+                        </>
+                        : <div className='flex flex-col justify-center items-center gap-5'>
+                                <NavLink to='/register' className={ ({isActive}) => isActive? "hidden" : "" }>Registro</NavLink>
+                                <NavLink to='/login'  className={ ({isActive}) => isActive? "hidden" : "bg-white text-[#21283a] w-full text-center px-2 py-2 rounded-lg" }>Iniciar sesión</NavLink>
+                            </div>
                 }
-                <NavLink to='/admin' className={ ({isActive}) => isActive ? "hidden" : "" }>Administración</NavLink>
                 
             </div>
             
@@ -146,7 +149,7 @@ export default function Header({children}) {
                     {/* Barra links */}
                     <div className='bg-[#21283a] flex flex-col'>
                         <div className='bg-[#21283a] h-20 text-white text-sm font-bold flex justify-evenly items-center'>
-                            <div className='flex gap-10'>
+                            <div className='flex gap-10 px-4 justify-center items-center'>
                                 {/* Usamos navLink porque sabe el que página estamos, en vez de Link que No lo sabe
                                 y el navLink tiene una propiedad que es el isActive que devuelve true si estás en la página o false si no estas en la pagina */}
                                 <NavLink to='/' className={ ({isActive}) => isActive ? onStyle : offStyle }>Inicio</NavLink>
@@ -155,7 +158,10 @@ export default function Header({children}) {
                         
                                 {
                                     isLogged && (
-                                        <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                        <>
+                                            <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                            <NavLink to='/calendar' className={ ({isActive}) => isActive ? onStyle : offStyle }>Calendario</NavLink>
+                                        </>
                                     )
                                 }
                         
@@ -251,7 +257,10 @@ export default function Header({children}) {
                         
                                 {
                                     isLogged && (
-                                        <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                        <>
+                                            <NavLink to='/dogRegister' className={ ({isActive}) => isActive ? onStyle : offStyle }>Registrar perro</NavLink>
+                                            <NavLink to='/calendar' className={ ({isActive}) => isActive ? onStyle : offStyle }>Calendario</NavLink>
+                                        </>
                                     )
                                 }
                         

@@ -6,6 +6,7 @@ import OurFriends from './pages/OurFriends'
 import Register from './pages/Register'
 import DogRegister from './pages/DogRegister'
 import Admin from './pages/Admin'
+import Calendar from './pages/Calendar'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/dogRegister' element={<DogRegister />}></Route>
         <Route path='/admin' element={<Admin />}></Route>
+        <Route path='/calendar' element={<Calendar />}></Route>
       </Routes>
     </div>
   )
