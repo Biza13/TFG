@@ -12,10 +12,12 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 
 #[ApiResource(
+    normalizationContext: ['groups' => ['event:read']],
     operations: [
         new GetCollection(),
         new Get(),
@@ -27,17 +29,21 @@ use ApiPlatform\Metadata\Patch;
 
 class Event
 {
+    #[Groups(['event:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column]
     private ?\DateTime $dateTime = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column]
     private ?int $capacity = null;
 
+    #[Groups(['event:read'])]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Service $service = null;
@@ -45,6 +51,7 @@ class Event
     /**
      * @var Collection<int, Dog>
      */
+    #[Groups(['event:read'])]
     #[ORM\ManyToMany(targetEntity: Dog::class)]
     private Collection $dogs;
 

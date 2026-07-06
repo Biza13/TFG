@@ -34,32 +34,41 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class Service
 {
+    #[Groups(['event:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(length: 100)]
     private ?string $name = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $features = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $features2 = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $icon_route = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(length: 255)]
     private ?string $shortDescription = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $titleFeatures = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $titleFeatures2 = null;
 
@@ -67,6 +76,7 @@ class Service
     #[Vich\UploadableField(mapping: 'services_images', fileNameProperty: 'icon_route')]
     private ?File $imageFile = null;
 
+    #[Groups(['event:read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
