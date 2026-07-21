@@ -63,7 +63,7 @@ export default function Header({children}) {
             <div className="flex justify-between items-center mb-3">
                 <img src={Logo} alt="Logo" className="w-16" />
 
-                <p className='font-bold text-2xl'>{children}</p>
+                <div className='font-bold text-2xl'>{children}</div>
 
                 {/* Botón menú hamburguesa */}
                 <button onClick={() => setMenuOpen(!menuOpen)} className="w-[15%] p-2 font-bold text-2xl flex justify-end">

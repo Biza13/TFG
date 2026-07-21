@@ -69,7 +69,9 @@ export default function EditDeleteEvent({closeModal, event}) {
         </button>
 
         <div className='w-[80%] bg-[#8a8a8a] p-5 rounded flex flex-col gap-4 relative justify-center items-center'>
+          
           <p className='font-bold text-2xl'>Editar/Borrar evento</p>
+
           <form onSubmit={handleSubmit} className='flex flex-col'>
           
             <div className='flex gap-5'>
