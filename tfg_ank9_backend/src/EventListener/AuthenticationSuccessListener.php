@@ -17,6 +17,10 @@ class AuthenticationSuccessListener
             return;
         }
 
+        if ($user instanceof \App\Entity\User && !$user->isVerified()) {
+            throw new \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException('', 'Debes verificar tu email antes de iniciar sesión.');
+        }
+
         // Aquí añadimos los campos que queremos que React reciba
         $data['email'] = $user->getUserIdentifier();
         $data['name'] = $user->getName();

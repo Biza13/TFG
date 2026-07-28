@@ -13,6 +13,9 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
 # PAra que se puedan subir los vides sino son demasiado grandes
 COPY uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 
+ARG FRONTEND_URL
+ENV FRONTEND_URL=$FRONTEND_URL
+
 WORKDIR /var/www/symfony
 # Copiamos el código de Symfony a la imagen
 COPY . .

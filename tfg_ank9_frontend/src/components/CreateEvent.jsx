@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios';
+import Loading from './Loading';
 
 export default function CreateEvent({closeModal}) {
 
   const [services, setServices] = useState([]);
+  const [isCreatingEvent, setIsCreatingEvent] = useState(false);
 
   useEffect(() => {
       const fetchServices = async () => {
@@ -19,6 +21,7 @@ export default function CreateEvent({closeModal}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsCreatingEvent(true);
 
     const data = {
         capacity: parseInt(e.target.capacity.value),
@@ -37,12 +40,14 @@ export default function CreateEvent({closeModal}) {
     } catch (error) {
         console.error(error);
         alert('No se pudo crear el evento.');
+    } finally {
+      setIsCreatingEvent(false);
     }
 
   }
 
   return (
-    <div className='fixed inset-0 z-50 bg-black/80 flex justify-center items-start p-5 md:p-8 overflow-y-auto overflow-x-hidden m-4 rounded-2xl'>
+    <div className='fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-5 md:p-8 overflow-y-auto overflow-x-hidden m-4 rounded-2xl'>
         <button 
           onClick={() => closeModal(false)}
           className='absolute top-0 right-0 md:top-4 md:right-4 z-70 bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-2xl hover:bg-red-700 shadow-xl border-2 border-[#8a8a8a]'
@@ -89,6 +94,13 @@ export default function CreateEvent({closeModal}) {
           </form>
 
         </div>
+
+        {
+          isCreatingEvent && (
+           <Loading>Creando evento...</Loading> 
+          )
+        }
+
     </div>
   )
 }

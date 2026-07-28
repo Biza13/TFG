@@ -37,6 +37,20 @@ export default function Register() {
     if (personImg) formData.append('imageFile', personImg);
 
     try {
+        await api.post('/register-user', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        alert('Registro completado. Revisa tu correo para verificar tu cuenta antes de iniciar sesión.');
+        window.location.href = '/login';
+
+    } catch (error) {
+        console.error('Error al registrar:', error.response?.data || error.message);
+        alert('Hubo un error en el registro. ' + (error.response?.data?.detail || ''));
+        setIsLoading(false);
+    }
+
+    /* try {
       // Registro del usuario
       const response = await api.post('/register-user', formData, {
         headers: {
@@ -76,8 +90,8 @@ export default function Register() {
       console.error('Error al registrar:', error.response?.data || error.message);
       alert('Hubo un error en el registro. Revisa la consola.'+ (error.response?.data?.detail));
       setIsLoading(false);
-    }
-  };
+    } */
+  }; 
 
   return (
     <>

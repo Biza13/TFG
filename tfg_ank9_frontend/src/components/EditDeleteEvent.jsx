@@ -5,9 +5,11 @@ import Loading from './Loading';
 export default function EditDeleteEvent({closeModal, event}) {
 
   const [isLoadingEdit, setIsLoadingEdit] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [services, setServices] = useState([]);
   const [formData, setFormData] = useState({
       capacity: event.capacity,
+      // Con el slice para que no me coja los segundos
       date: event.date ? event.date.slice(0, 16) : '',
       serviceId: event.serviceId,
   });
@@ -24,14 +26,15 @@ export default function EditDeleteEvent({closeModal, event}) {
       fetchServices();
   }, [])
 
+  // Para editar los eventos
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('data a enviar:', formData);
     setIsLoadingEdit(true)
 
     const data = {
         capacity: parseInt(formData.capacity),
         dateTime: formData.date,
+        // Con la URL del servicio Api Platform relaciona las entidades
         service: `/api/services/${formData.serviceId}`,
     }
 
@@ -50,17 +53,31 @@ export default function EditDeleteEvent({closeModal, event}) {
       console.error("Error al actualizar el evento:", error);
       alert("No se pudo actualizar el evento.");
     } finally {
-      setIsLoadingEdit(false)
+      setIsLoadingEdit(false);
     }
 
   }
 
+  // Para borrar evento
   const handleDelete = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setIsLoadingDelete(true);
+
+    try {
+      await api.delete(`/events/${event.id}`)
+      alert("Evento eliminado con 'éxito")
+      window.location.reload();
+      closeModal(false);
+    } catch (error) {
+      console.error("Error al eliminar el evento: ", error);
+      alert("No se puedo eliminar el evento");
+    }finally{
+      setIsLoadingDelete(false);
+    }
   }
 
   return (
-    <div className='fixed inset-0 z-50 bg-black/80 flex justify-center items-start p-5 md:p-8 overflow-y-auto overflow-x-hidden m-4 rounded-2xl'>
+    <div className='fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-5 md:p-8 overflow-y-auto overflow-x-hidden m-4 rounded-2xl'>
         <button 
           onClick={() => closeModal(false)}
           className='absolute top-0 right-0 md:top-4 md:right-4 z-70 bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-2xl hover:bg-red-700 shadow-xl border-2 border-[#8a8a8a]'
@@ -124,6 +141,10 @@ export default function EditDeleteEvent({closeModal, event}) {
 
         {isLoadingEdit && (
           <Loading>Editando evento...</Loading>
+        )}
+
+        {isLoadingDelete && (
+          <Loading>Eliminando evento...</Loading>
         )}
 
     </div>

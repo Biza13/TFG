@@ -10,6 +10,13 @@ export default function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  /* 
+    El serachParams coge la parte de la URL que va después del ?. por lo tanto cuando una persona se registra y le da al enlace del email que se le envia
+    en la URL aparece la pagina .../login?verified=1
+  */
+  const searchParams = new URLSearchParams(window.location.search);
+  // Si el searchParams tiene el verified devolvera lo que hay despues del = en este caso 1
+  const verified = searchParams.get('verified');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -67,6 +74,13 @@ export default function LogIn() {
           initial={{opacity:0, scale:0.5, y:0}}
           animate={{opacity:1, scale:1, y:0}}
           transition={{duration:1}}>
+
+            {verified === '1' && (
+                <p className='text-[#21283a] text-center font-bold mb-4'>
+                    ✓ Email verificado correctamente. Ya puedes iniciar sesión.
+                </p>
+            )}
+
             <form onSubmit={handleLogin} className='flex flex-col justify-center items-center gap-5'>
           
               <div className='w-[95%] md:w-[80%] flex flex-col items-center'>

@@ -13,12 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Attribute\Route;
+// Para la verificación por email
+use Symfony\Component\Mailer\MailerInterface;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class RegisterController extends AbstractController{
 
     // 1. FUNCIÓN PARA REGISTRAR SOLO AL USUARIO
     #[Route('/api/register-user', name: 'app_register_user', methods: ['POST'])]
-    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper, MailerInterface $mailer): Response
     {
         // Extraemos los textos del formData de react ($request->request)
         $email = $request->request->get('email');
@@ -57,6 +60,8 @@ class RegisterController extends AbstractController{
         $user->setEmail($email);
         $user->setName($name);
         $user->setLastName($request->request->get('lastName'));
+        // Para la verificación por email
+        $user->setIsVerified(false);
 
         // Si viene la bandera desde React es que queremos crear un admin asi que le damos los roles
         if ($makeAdmin === 'true') {
@@ -83,8 +88,26 @@ class RegisterController extends AbstractController{
             return new JsonResponse(['error' => 'El email ya está registrado o hubo un error'], 409);
         }
 
+        $user->setImageFile(null);
+
+        // Para la verificación por email
+        $signatureComponents = $verifyEmailHelper->generateSignature(
+            'app_verify_email',
+            (string) $user->getId(),
+            $user->getEmail(),
+            ['id' => $user->getId()]
+        );
+
+        error_log('Intentando enviar email a: ' . $user->getEmail());
+
+        try {
+            $mailer->send(\App\Email\VerificationEmail::create($user, $signatureComponents));
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al enviar el email: ' . $e->getMessage()], 500);
+        }
+
         return new JsonResponse([
-            'status' => 'Usuario registrado!',
+            'status' => 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',
             'userId' => $user->getId() 
         ], 201);
     }
@@ -182,4 +205,28 @@ class RegisterController extends AbstractController{
 
         return new JsonResponse(['status' => 'Usuario y datos eliminados correctamente!'], 200);
     }
+
+    // Para la verificación por email
+    #[Route('/api/verify/email', name: 'app_verify_email', methods: ['GET'])]
+    public function verifyUserEmail(Request $request, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper): Response
+    {
+        $id = $request->query->get('id');
+        $user = $em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        try {
+            $verifyEmailHelper->validateEmailConfirmation($request->getUri(), (string) $user->getId(), $user->getEmail());
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'El enlace no es válido o ha caducado: ' . $e->getMessage()], 400);
+        }
+
+        $user->setIsVerified(true);
+        $em->flush();
+
+        return $this->redirect($_ENV['FRONTEND_URL'].'/login?verified=1');
+    }
+
 }

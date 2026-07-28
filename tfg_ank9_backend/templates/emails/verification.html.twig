@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Hola {{ user.name }}, bienvenido a AnK9</h1>
+    <p>Haz clic en el enlace para verificar tu cuenta:</p>
+    <a href="{{ signedUrl }}">Verificar mi cuenta</a>
+    <p>El enlace caduca el {{ expiresAt|date('d/m/Y H:i') }}.</p>
+</body>
+</html>

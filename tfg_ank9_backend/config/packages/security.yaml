@@ -63,6 +63,7 @@ security:
         # Accesos publicos
         - { path: ^/api/services, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/galleries, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/verify/email, roles: PUBLIC_ACCESS }
         # Acceso restringido al resto de paginas con el token
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
