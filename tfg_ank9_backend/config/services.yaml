@@ -19,5 +19,5 @@ services:
 
     # Para el servicio de mailer pero en despliegue "Gratuito"    
     App\Email\BrevoMailer:
-    arguments:
-        $apiKey: '%env(BREVO_API_KEY)%'
+        arguments:
+            $apiKey: '%env(BREVO_API_KEY)%'
