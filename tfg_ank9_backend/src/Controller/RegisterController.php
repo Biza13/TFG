@@ -13,15 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Attribute\Route;
-// Para la verificación por email
-use Symfony\Component\Mailer\MailerInterface;
+// Para la verificación por email, aunque para el despliegue hay que modificarlo
+#use Symfony\Component\Mailer\MailerInterface;
+use App\Email\BrevoMailer;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 class RegisterController extends AbstractController{
 
     // 1. FUNCIÓN PARA REGISTRAR SOLO AL USUARIO
     #[Route('/api/register-user', name: 'app_register_user', methods: ['POST'])]
-    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper, MailerInterface $mailer): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper, BrevoMailer $brevoMailer): Response
     {
         // Extraemos los textos del formData de react ($request->request)
         $email = $request->request->get('email');
@@ -100,8 +101,20 @@ class RegisterController extends AbstractController{
 
         error_log('Intentando enviar email a: ' . $user->getEmail());
 
-        try {
+        /* Estre try catch era para el mailer pero en local y funcionaba bien */
+        /* try {
             $mailer->send(\App\Email\VerificationEmail::create($user, $signatureComponents));
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al enviar el email: ' . $e->getMessage()], 500);
+        } */
+
+        /* Estre otro es para el despliegue "Gratuito" */
+        try {
+            $html = '<h1>Hola ' . $user->getName() . ', bienvenido a AnK9</h1>
+                <p>Haz clic en el enlace para verificar tu cuenta:</p>
+                <a href="' . $signatureComponents->getSignedUrl() . '">Verificar mi cuenta</a>
+                <p>El enlace caduca el ' . $signatureComponents->getExpiresAt()->format('d/m/Y H:i') . '.</p>';
+            $brevoMailer->send($user->getEmail(), $user->getName(), 'Confirma tu correo electrónico', $html);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al enviar el email: ' . $e->getMessage()], 500);
         }

@@ -16,3 +16,8 @@ services:
     App\EventListener\AuthenticationSuccessListener:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    # Para el servicio de mailer pero en despliegue "Gratuito"    
+    App\Email\BrevoMailer:
+    arguments:
+        $apiKey: '%env(BREVO_API_KEY)%'
