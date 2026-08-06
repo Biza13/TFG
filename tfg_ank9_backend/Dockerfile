@@ -23,6 +23,7 @@ COPY . .
 # Instalamos Composer con copy en vez de con run, leyendolo de un docker ya creado en dockerHub y damos permisos a las carpetas
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader --no-scripts \
+    && mkdir -p var/cache var/log \
     && chown -R www-data:www-data /var/www/symfony \
     && chmod -R 777 /var/www/symfony/var
 
