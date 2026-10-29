@@ -10,23 +10,16 @@ class CloudinaryService
 {
     private Cloudinary $cloudinary;
 
-    public function __construct(string $cloudName, string $apiKey, string $apiSecret)
+    public function __construct()
     {
-        $this->cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => $cloudName,
-                'api_key'    => $apiKey,
-                'api_secret' => $apiSecret,
-            ],
-            'url' => ['secure' => true],
-        ]);
+        $this->cloudinary = new Cloudinary();
     }
 
     public function upload(UploadedFile $file, string $folder = 'ank9'): string
     {
         $result = $this->cloudinary->uploadApi()->upload($file->getPathname(), [
-            'folder'          => $folder,
-            'resource_type'   => 'auto',
+            'folder'        => $folder,
+            'resource_type' => 'auto',
         ]);
 
         return $result['secure_url'];
