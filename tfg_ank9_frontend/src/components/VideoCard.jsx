@@ -1,5 +1,6 @@
 import React from 'react'
 import DeleteButton from './DeleteButton'
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function VideoCard({video, isAdmin, handleDelete}) {
   return (
@@ -18,15 +19,11 @@ export default function VideoCard({video, isAdmin, handleDelete}) {
                       playsInline
                   >
                       {/* Ajusta la URL según donde guardes los archivos en Symfony */}
-                      <source src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${video.imgvideo_route}`} type="video/mp4" />
+                      {/* <source src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${video.imgvideo_route}`} type="video/mp4" /> */}
+                      <source src={getImageUrl(video.imgvideo_route, 'gallery')} type="video/mp4" />
                       Tu navegador no soporta videos.
                   </video>
                   
-                  {/* {video.text && (
-                      <div className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-sm text-white p-3 rounded-xl text-sm">
-                          {video.text}
-                      </div>
-                  )} */}
                 </div>
 
                 {video.text && (

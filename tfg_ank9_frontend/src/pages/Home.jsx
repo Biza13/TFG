@@ -11,6 +11,7 @@ import {animate, motion} from 'framer-motion'
 import { useEffect, useState } from 'react';
 /* Siempre que se haga una llamada a la api hay que poner este import */
 import api from '../api/axios'
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function Home() {
 
@@ -95,7 +96,8 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+                            /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+                            icon={getImageUrl(service.icon_route, 'services')}
                             isHome = {true}
                             >
                               {service.shortDescription}
@@ -173,7 +175,8 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+                            /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+                            icon={getImageUrl(service.icon_route, 'services')}
                             isHome = {true}
                             >
                               {service.shortDescription}
@@ -253,7 +256,8 @@ export default function Home() {
                             key = {service.id}
                             title = {service.name}
                             /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                            icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+                            /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+                            icon={getImageUrl(service.icon_route, 'services')}
                             isHome = {true}
                             >
                               {service.shortDescription}

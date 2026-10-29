@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Service\CloudinaryService;
 
 #[Route('/api/services')]
 final class ServiceController extends AbstractController
@@ -24,7 +25,7 @@ final class ServiceController extends AbstractController
 
     /* Para añadir un servicio */
     #[Route('/create-service', name: 'create_service', methods: ['POST'])]
-    public function createService(Request $request, EntityManagerInterface $em): JsonResponse
+    public function createService(Request $request, EntityManagerInterface $em, CloudinaryService $cloudinaryService): JsonResponse
     {
 
         error_log("Nombre recibido: " . $request->request->get('name'));
@@ -46,7 +47,8 @@ final class ServiceController extends AbstractController
         $file = $request->files->get('icon');
 
         if ($file) {
-            $service->setImageFile($file);
+            $url = $cloudinaryService->upload($file, 'ank9/services');
+            $service->setIconRoute($url);
         }
 
         // Persistir en la bd
@@ -60,7 +62,7 @@ final class ServiceController extends AbstractController
     }
 
     #[Route('/edit-service/{id}', name: 'edit_service', methods: ['POST'])]
-    public function editService(int $id, Request $request, ServiceRepository $serviceRepository, EntityManagerInterface $em): JsonResponse{
+    public function editService(int $id, Request $request, ServiceRepository $serviceRepository, EntityManagerInterface $em, CloudinaryService $cloudinaryService): JsonResponse{
 
         $service = $serviceRepository->find($id);
 
@@ -81,10 +83,8 @@ final class ServiceController extends AbstractController
         $file = $request->files->get('icon');
 
         if ($file){
-            // Borramos el icono antiguo el vichUploaderBundle lo hace automatico
-            $service->setImageFile($file);
-
-            // Forzar la actualización de la fecha de la edición
+            $url = $cloudinaryService->upload($file, 'ank9/services');
+            $service->setIconRoute($url);
             $service->setUpdatedAt(new \DateTimeImmutable());
         }
 

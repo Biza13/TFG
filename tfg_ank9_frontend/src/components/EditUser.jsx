@@ -1,4 +1,5 @@
 import React from 'react'
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function EditUser({setEditModal, handleChange, handleSubmit, user, imgUser, setImgUser}) {
     
@@ -57,7 +58,8 @@ export default function EditUser({setEditModal, handleChange, handleSubmit, user
 
             <div>
                 <p>Imagen actual</p>
-                <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/users/${user.picture_route}`} alt="" className='w-20 h-20' />
+                {/* <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/users/${user.picture_route}`} alt="" className='w-20 h-20' /> */}
+                <img src={getImageUrl(user.picture_route, 'users')} alt="" className='w-20 h-20' />
             </div>
 
             <div className='w-full md:w-[90%] m-auto flex flex-col px-2 justify-center items-center mt-5'>

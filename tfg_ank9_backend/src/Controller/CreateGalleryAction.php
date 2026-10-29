@@ -9,11 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Service\CloudinaryService;
 
 #[AsController]
 final class CreateGalleryAction extends AbstractController
 {
-    public function __invoke(Request $request, EntityManagerInterface $em): JsonResponse
+    public function __invoke(Request $request, EntityManagerInterface $em, CloudinaryService $cloudinaryService): JsonResponse
     {
         // Extraemos el archivo que viene de React (La imagen)
         $uploadedFile = $request->files->get('imageFile');
@@ -26,7 +27,9 @@ final class CreateGalleryAction extends AbstractController
         $gallery = new Gallery();
 
         // Rellenamos los datos con lo que viene de react
-        $gallery->setImageFile($uploadedFile);
+        $url = $cloudinaryService->upload($uploadedFile, 'ank9/gallery');
+        $gallery->setImgvideoRoute($url);
+        
         $gallery->setText($request->request->get('text'));
         $gallery->setType($request->request->get('type', 'image'));
         

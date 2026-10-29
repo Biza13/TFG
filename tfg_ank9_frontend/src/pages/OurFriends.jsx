@@ -8,6 +8,7 @@ import api from '../api/axios';
 import ImgCard from '../components/ImgCard';
 import AddButton from '../components/AddButton';
 import Loading from '../components/Loading';
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function OurFriends() {
 
@@ -176,6 +177,7 @@ export default function OurFriends() {
                     Añadir nuevo contenido a la galería
                   </label>
                   
+                  {/* Div para subir a la galeria archivos desde el local */}
                   <div className='w-full flex flex-col justify-center items-center'>
 
                     <div className='flex flex-col md:flex-row gap-0 md:gap-4'>
@@ -235,6 +237,14 @@ export default function OurFriends() {
                       </div>
                     )}
                   </div>
+
+                  <div>
+                    <form onSubmit={handleUpload}>
+
+
+
+                    </form>
+                  </div>
                   
                   {/* <p className="mt-2 text-xs text-gray-500">
                     Formatos admitidos: Imágenes (jpg, png) y Videos (mp4).
@@ -251,7 +261,8 @@ export default function OurFriends() {
           {imgGallery.map((item, index) => {
             return <ImgCard 
                       img={item} 
-                      imgSelected={() => setSelectedImg(`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${item.imgvideo_route}`)}
+                      /* imgSelected={() => setSelectedImg(`${import.meta.env.VITE_UPLOADS_URL}/uploads/gallery/${item.imgvideo_route}`)} */
+                      imgSelected={() => setSelectedImg(getImageUrl(item.imgvideo_route, 'gallery'))}
                       handleDelete={() => handleDelete(item.id)}  
                       isAdmin={isAdmin}
                     ></ImgCard>

@@ -17,7 +17,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
 
-    # Para el servicio de mailer pero en despliegue "Gratuito"    
+    # Para el servicio de mailer pero en despliegue "Gratuito"
     App\Email\BrevoMailer:
         arguments:
             $apiKey: '%env(BREVO_API_KEY)%'
+
+    App\Service\CloudinaryService:
+        arguments:
+            $cloudName: '%env(CLOUDINARY_CLOUD_NAME)%'
+            $apiKey: '%env(CLOUDINARY_API_KEY)%'
+            $apiSecret: '%env(CLOUDINARY_API_SECRET)%'

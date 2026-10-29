@@ -1,0 +1,75 @@
+============================================================
+  SERVICIOS UTILIZADOS PARA EL DESPLIEGUE DE ANK9
+============================================================
+
+FRONTEND
+--------
+Servicio: Vercel (vercel.com)
+URL producción: https://tfg-seven-navy.vercel.app
+Plan: Gratuito (Hobby)
+Qué hace: Sirve el frontend React/Vite como archivos estáticos
+Repo conectado: Biza13/TGF (rama main)
+Variables de entorno:
+  - VITE_API_URL = https://tfg-ank9-backend.onrender.com/api
+  - VITE_UPLOADS_URL = https://tfg-ank9-backend.onrender.com
+
+BACKEND
+-------
+Servicio: Render (render.com)
+URL producción: https://tfg-ank9-backend.onrender.com
+Plan: Gratuito (Free) — se duerme tras 15 min sin tráfico
+Qué hace: Ejecuta el backend Symfony con PHP via Docker
+Repo conectado: Biza13/TGF (rama main, carpeta tfg_ank9_backend)
+Repo es la conexion con github
+Variables de entorno en Render:
+  - APP_ENV = prod
+  - APP_SECRET = (cadena aleatoria de 32 caracteres)
+  - DATABASE_URL = mysql://tfgAnk9_forgeteven:<password>@e6uh69.h.filess.io:61002/tfgAnk9_forgeteven?serverVersion=8.0.29&charset=utf8mb4
+  - MAILER_DSN = null://null
+  - MESSENGER_TRANSPORT_DSN = sync://
+  - FRONTEND_URL = https://tfg-seven-navy.vercel.app
+  - CORS_ALLOW_ORIGIN = ^https://tfg-seven-navy\.vercel\.app$
+  - JWT_PASSPHRASE = ce5880c03aacade6d7b3f67e3dc46123983219bbde8515593dc7f1b5eeca985b
+  - JWT_SECRET_KEY = (contenido del archivo private.pem)
+  - JWT_PUBLIC_KEY = (contenido del archivo public.pem)
+  - BREVO_API_KEY = (clave API de Brevo)
+
+BASE DE DATOS
+-------------
+Servicio: Clever Cloud (clever-cloud.com)
+Plan: Gratuito (MySQL Shared)
+Motor: MySQL
+Nota: Filess.io fue descartado por eliminar la BD por inactividad
+Datos de conexión: pendiente de configurar
+Terminal web: console.clever-cloud.com
+
+EMAIL TRANSACCIONAL
+-------------------
+Servicio: Brevo (brevo.com)
+Plan: Gratuito (300 emails/día)
+Cómo se usa: API HTTP (no SMTP, porque Render bloquea puertos SMTP)
+Login SMTP (por si se necesita en local): b4abe3001@smtp-brevo.com
+Servidor SMTP (solo local): smtp-relay.brevo.com:587
+Variable usada: BREVO_API_KEY en Render
+
+ALMACENAMIENTO DE ARCHIVOS (PENDIENTE)
+---------------------------------------
+Servicio: Cloudinary (cloudinary.com)
+Plan: Gratuito (25GB almacenamiento, 25GB transferencia/mes)
+Motivo: Render borra los archivos subidos al redesplegar (sistema de archivos efímero)
+Estado: pendiente de configurar
+
+============================================================
+  NOTAS IMPORTANTES
+============================================================
+
+- El backend en Render tarda ~30s en arrancar si lleva un rato sin tráfico
+- Los archivos subidos directamente a Render SE BORRAN en cada redespliegue
+  → Por eso se migra a Cloudinary
+- Para hacer administrador a un usuario, ejecutar en la terminal de Clever Cloud:
+  UPDATE user SET roles = '["ROLE_ADMIN","ROLE_USER"]' WHERE email = 'email@ejemplo.com';
+- Para verificar manualmente un usuario:
+  UPDATE user SET is_verified = 1 WHERE email = 'email@ejemplo.com';
+- El comando de limpieza de eventos viejos se ejecuta manualmente:
+  php bin/console app:clean-old-events
+  (o añadir cron job en producción: 0 3 * * * php /ruta/bin/console app:clean-old-events)

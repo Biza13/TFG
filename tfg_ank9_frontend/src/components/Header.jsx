@@ -6,6 +6,7 @@ import useDeviceType from '../hooks/useDeviceType';
 import { useEffect, useState } from 'react'
 import ham from '../assets/img/ham.png'
 import AddButton from './AddButton';
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function Header({children}) {
 
@@ -81,7 +82,9 @@ export default function Header({children}) {
                                         {
                                             fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                 <img 
-                                                src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                /* src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} */
+                                                //Esto para poner la foto de perfil con cloudinary
+                                                src={getImageUrl(fotoPerfil, 'users')}
                                                 className="w-10 h-10 rounded-full object-cover" 
                                                 alt="Avatar"
                                                 />
@@ -177,7 +180,9 @@ export default function Header({children}) {
                                                     {
                                                         fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                             <img 
-                                                            src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                            /* src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} */
+                                                            //Esto para poner la foto de perfil con cloudinary
+                                                            src={getImageUrl(fotoPerfil, 'users')}
                                                             className="w-10 h-10 rounded-full object-cover" 
                                                             alt="Avatar"
                                                             />
@@ -276,7 +281,9 @@ export default function Header({children}) {
                                                     {
                                                         fotoPerfil && fotoPerfil !== "null" && fotoPerfil !== "undefined" ? (
                                                             <img 
-                                                            src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} 
+                                                            /* src={`${API_BASE_URL}/uploads/users/${fotoPerfil}`} */
+                                                            //Esto para poner la foto de perfil con cloudinary
+                                                            src={getImageUrl(fotoPerfil, 'users')}
                                                             className="w-10 h-10 rounded-full object-cover" 
                                                             alt="Avatar"
                                                             />

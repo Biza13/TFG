@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import api from '../api/axios'
 import Loading from '../components/Loading';
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function DogsModal({setDogModal, user}) {
 
@@ -68,7 +69,8 @@ export default function DogsModal({setDogModal, user}) {
                                 {
                                     dog.picture_route 
                                         ? <td className='p-1'>
-                                            <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/dogs/${dog.picture_route}`} className='w-20 h-20'></img>
+                                            {/* <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/dogs/${dog.picture_route}`} className='w-20 h-20'></img> */}
+                                            <img src={getImageUrl(dog.picture_route, 'dogs')} className='w-20 h-20'></img>
                                         </td>
                                         : <td className='p-1 w-20 h-20'>Sin foto</td>
                                 }
@@ -105,9 +107,14 @@ export default function DogsModal({setDogModal, user}) {
                             </div>
                             <div className='text-center flex flex-col justify-center items-center'>
                                 <p className='font-bold'>Imagen</p>
-                                {
+                                {/* {
                                     dog.picture_route 
                                         ? <img src={`${import.meta.env.VITE_UPLOADS_URL}/uploads/dogs/${dog.picture_route}`} className='w-20 h-20'></img>
+                                        : <p className='w-20 h-20'>Sin foto</p>
+                                } */}
+                                {
+                                    dog.picture_route 
+                                        ? <img src={getImageUrl(dog.picture_route, 'dogs')} className='w-20 h-20'></img>
                                         : <p className='w-20 h-20'>Sin foto</p>
                                 }
                             </div>

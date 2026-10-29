@@ -17,12 +17,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #use Symfony\Component\Mailer\MailerInterface;
 use App\Email\BrevoMailer;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use App\Service\CloudinaryService;
 
 class RegisterController extends AbstractController{
 
     // 1. FUNCIÓN PARA REGISTRAR SOLO AL USUARIO
     #[Route('/api/register-user', name: 'app_register_user', methods: ['POST'])]
-    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper, BrevoMailer $brevoMailer): Response
+    public function registerUser(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $em, VerifyEmailHelperInterface $verifyEmailHelper, BrevoMailer $brevoMailer, CloudinaryService $cloudinaryService): Response
     {
         // Extraemos los textos del formData de react ($request->request)
         $email = $request->request->get('email');
@@ -78,7 +79,8 @@ class RegisterController extends AbstractController{
         $user->setPassword($hashedPassword);
 
         if ($personImg) {
-            $user->setImageFile($personImg);
+            $url = $cloudinaryService->upload($personImg, 'ank9/users');
+            $user->setPictureRoute($url);
         }
 
         // Guardad Usuario en la BD
@@ -126,7 +128,7 @@ class RegisterController extends AbstractController{
     }
 
     #[Route('/api/edit-user/{id}', name: 'app_edit_user', methods: ['POST'])]
-    public function editUser(int $id, Request $request, UserPasswordHasherInterface $hasher, UserRepository $userRepository, EntityManagerInterface $em): Response
+    public function editUser(int $id, Request $request, UserPasswordHasherInterface $hasher, UserRepository $userRepository, EntityManagerInterface $em, CloudinaryService $cloudinaryService): Response
     {
 
         $user = $userRepository->find($id);
@@ -153,10 +155,8 @@ class RegisterController extends AbstractController{
         $file = $request->files->get('imageFile');
 
         if ($file){
-            // Borramos la foto antiguo el vichUploaderBundle lo hace automatico
-            $user->setImageFile($file);
-
-            // Forzar la actualización de la fecha de la edición
+            $url = $cloudinaryService->upload($file, 'ank9/users');
+            $user->setPictureRoute($url);
             $user->setUpdatedAt(new \DateTimeImmutable());
         }
 
@@ -167,7 +167,7 @@ class RegisterController extends AbstractController{
 
     // FUNCIÓN PARA REGISTRAR AL PERRO Y VINCULARLO
     #[Route('/api/register-dog', name: 'app_register_dog', methods: ['POST'])]
-    public function registerDog(Request $request, EntityManagerInterface $em): Response
+    public function registerDog(Request $request, EntityManagerInterface $em, CloudinaryService $cloudinaryService): Response
     {
 
         // Conseguit el id del usuario con el token
@@ -194,7 +194,8 @@ class RegisterController extends AbstractController{
         $dog->setUser($user); // Le asignamos el dueño con el token
 
         if ($dogImg) {
-            $dog->setImageFile($dogImg);
+            $url = $cloudinaryService->upload($dogImg, 'ank9/dogs');
+            $dog->setPictureRoute($url);
         }
 
         $em->persist($dog);

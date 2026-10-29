@@ -13,6 +13,7 @@ import AddButton from '../components/AddButton'
 import AddService from '../components/AddService'
 import DeleteService from '../components/DeleteService'
 import Loading from '../components/Loading';
+import { getImageUrl } from '../utils/imageUrl';
 
 export default function Services() {
 
@@ -118,7 +119,8 @@ export default function Services() {
               key = {service.id}
               title = {service.name}
               /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-              icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+              /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+              icon={getImageUrl(service.icon_route, 'services')}
               isHome = {false}
               featureTitle = {service.titleFeatures}
               features = {service.features}
@@ -192,7 +194,8 @@ export default function Services() {
                   key = {service.id}
                   title = {service.name}
                   /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                  icon={`h${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+                  /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+                  icon={getImageUrl(service.icon_route, 'services')}
                   isHome = {false}
                   featureTitle = {service.titleFeatures}
                   features = {service.features}
@@ -270,7 +273,8 @@ export default function Services() {
                   key = {service.id}
                   title = {service.name}
                   /* Aqui habra quq cambiarlo por la url cuando este desplegado */
-                  icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`}
+                  /* icon={`${import.meta.env.VITE_UPLOADS_URL}/uploads/services/${service.icon_route}`} */
+                  icon={getImageUrl(service.icon_route, 'services')}
                   isHome = {false}
                   featureTitle = {service.titleFeatures}
                   features = {service.features}

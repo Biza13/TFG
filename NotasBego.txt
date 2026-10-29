@@ -1,0 +1,8 @@
+-pagina:
+https://tfg-seven-navy.vercel.app
+
+-pagina para la bd
+https://console.clever-cloud.com/
+
+-Comando para dar admin
+UPDATE user SET roles = '["ROLE_ADMIN","ROLE_USER"]', is_verified = 1 WHERE email = 'tu@email.com';
